@@ -1,3 +1,3 @@
 # tutorials
-learn PWA
-learn WebAssembly
+learn PWA.  
+learn WebAssembly.  
