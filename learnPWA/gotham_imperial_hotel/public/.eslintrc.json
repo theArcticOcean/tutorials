@@ -1,0 +1,20 @@
+{
+  "env": {
+    "browser": true,
+    "serviceworker": true,
+    "jquery": true,
+    "es6": true,
+    "node": false
+  },
+  "rules": {
+    "no-unused-vars": 0
+  },
+  "globals": {
+    "updateReservationDisplay": false,
+    "getReservations": false,
+    "updateInObjectStore": false,
+    "addToObjectStore": false,
+    "ProgressiveKITT": false,
+    "google": false
+  }
+}
