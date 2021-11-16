@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<script src="./jquery.js"></script>
+<title>Test</title>
+</head>
+<body>
+<script>
+  function isWebAssemblySupported()
+  {
+    try{
+      if( typeof WebAssembly === "object")
+      {
+        const module = new WebAssembly.Module(new Uint8Array([0x00, 0x61, 0x73, 0x6D, 0x01, 0x00, 0x00, 0x00]));
+        if( module instanceof WebAssembly.Module )
+        {
+          const moduleInstance = new WebAssembly.Instance(module);
+          return (moduleInstance instanceof WebAssembly.Instance);
+        }
+      }
+    }
+    catch (err)
+    {
+      console.log( err );
+    }
+
+    return false;
+  }
+
+  console.log((isWebAssemblySupported() ? "WebAssembly is supported!": "WebAssembly is not supported!"));
+
+  if( typeof WebAssembly.instantiateStreaming === "function" )
+  {
+    console.log("You can use the WebAssembly.instantiateStreaming!");
+  }
+  else
+  {
+    console.log("WebAssembly.instantiateStreaming is not a function!");
+  }
+</script>
+</body>
+</html>
