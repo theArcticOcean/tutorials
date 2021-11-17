@@ -7,4 +7,4 @@ if __name__ == '__main__':
     mat = fitz.Matrix(zoom_x, zoom_y)  # zoom factor 2 in each dimension
     for page in doc:  # iterate through the pages
         pix = page.get_pixmap(matrix=mat)  # render page to an image
-        pix.save("../output/page-%i.png" % page.number)  # store image as a PNG
+        pix.save("./output/page-%i.png" % page.number)  # store image as a PNG
