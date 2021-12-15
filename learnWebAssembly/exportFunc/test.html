@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title>Test</title>
+</head>
+<body>
+<script async type="text/javascript" src="GetPrimers.js"></script>
+<script>
+async function fetchAndInstantiate() {
+    const response = await fetch("GetPrimers.wasm");
+    const buffer = await response.arrayBuffer();
+    const obj = await WebAssembly.instantiate(buffer);
+    console.log(obj.instance.exports.compute(2, 3));
+}
+fetchAndInstantiate();
+
+</script>
+</body>
+</html>
