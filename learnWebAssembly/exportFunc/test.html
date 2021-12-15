@@ -10,10 +10,12 @@ async function fetchAndInstantiate() {
     const response = await fetch("GetPrimers.wasm");
     const buffer = await response.arrayBuffer();
     const obj = await WebAssembly.instantiate(buffer);
-    console.log(obj.instance.exports.compute(2, 3));
+    const ans = obj.instance.exports.compute(2, 3);
+    
+    console.log( ans );
+    alert( ans );
 }
 fetchAndInstantiate();
-
 </script>
 </body>
 </html>
