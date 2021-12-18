@@ -6,18 +6,18 @@
    </head>
    <body>
       <div>
-         Function root is approximately at x =
+         Resolved Result 
          <span id="answer"/>
       </div>
       <script>
          // Wait for module to initialize,
          createModule().then(({Resolver}) => {
             const worker = new Resolver();
-            const x = 10024.9;
+            const x = 10024;
             const result = worker.GetResolvedResult( x );
             // Write the value of 'root' to the tag whose 'id' is equal to "answer"
             console.log( result );
-            document.getElementById("answer").innerHTML = "$" + result + "$";
+            document.getElementById("answer").innerHTML = x.toString() + " = $" + result + "$";
          });
       </script>
    </body>
