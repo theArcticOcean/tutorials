@@ -4,6 +4,6 @@
 int main()
 {
 	Resolver worker;
-	std::cout << worker.GetResolvedResult( 100 ) << std::endl;
+	std::cout << worker.GetResolvedResult( 19950212 ) << std::endl;
 	return 0;
 }

@@ -25,7 +25,8 @@ std::string Resolver::GetResolvedResult(int x)
 	cnt=0;
     find(x,120);
     std::sort(fac,fac+cnt);
-    memset(num,0,sizeof(num));
+    memset(num,0,sizeof(LL)*N);
+    memset(fac,0,sizeof(LL)*N);
     int k=0;
     for(int i=0;i<cnt;i++){
         if(i==0){
