@@ -19,7 +19,7 @@ Resolver::~Resolver()
     delete [] num;
 }
 
-std::string Resolver::GetResolvedResult(LL x)
+std::string Resolver::GetResolvedResult(int x)
 {
 	char str[10005] = { 0 };
 	cnt=0;

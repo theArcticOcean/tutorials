@@ -6,7 +6,7 @@ class Resolver
 public:
 	Resolver();
 	~Resolver();
-	std::string GetResolvedResult(LL x);
+	std::string GetResolvedResult(int x);
 
 protected:
 	void find(LL n,LL c);

@@ -1,0 +1,22 @@
+<html>
+   <head>
+      <!-- Load WebAssembly module -->
+      <script type="text/javascript" src="build_wasm/Resolver.js"></script>
+   </head>
+   <body>
+      <div>
+         Function root is approximately at x =
+         <span id="answer"/>
+      </div>
+      <script>
+         // Wait for module to initialize,
+         createModule().then(({Resolver}) => {
+            const worker = new Resolver();
+            const x = 100;
+            const result = worker.GetResolvedResult( x );
+            // Write the value of 'root' to the tag whose 'id' is equal to "answer"
+            document.getElementById("answer").innerHTML = result;
+         });
+      </script>
+   </body>
+</html>
