@@ -43,9 +43,21 @@ std::string Resolver::GetResolvedResult(int x)
         }
     }
     for(int i=0;i<k;i++){
-        sprintf(str + strlen(str), "%lld^%lld*",fac[i], num[i]);
+    	if( num[i] != 1 )
+    	{
+	        sprintf(str + strlen(str), "%lld^{%lld} \\times ",fac[i], num[i]);
+    	}
+    	else {
+	    	sprintf(str + strlen(str), "%lld \\times ",fac[i]);	
+    	}
     }
-    sprintf(str + strlen(str), "%lld^%lld\n", fac[k], num[k]);
+    if( num[k] != 1 )
+    {
+	    sprintf(str + strlen(str), "%lld^{%lld}", fac[k], num[k]);
+    }
+    else {
+	    sprintf(str + strlen(str), "%lld", fac[k]);
+    }
     return std::string( str );
 }
 
