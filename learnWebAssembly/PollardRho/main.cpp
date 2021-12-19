@@ -1,9 +1,11 @@
 #include "resolver.h"
 #include <iostream>
+#include <string>
 
-int main()
+int main(int argc, char *argv[])
 {
 	Resolver worker;
-	std::cout << worker.GetResolvedResult( 19950212 ) << std::endl;
+	int x = std::stoi( argv[1] );
+	std::cout << worker.GetResolvedResult( x ) << std::endl;
 	return 0;
 }

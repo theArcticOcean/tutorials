@@ -21,12 +21,12 @@ Resolver::~Resolver()
 
 std::string Resolver::GetResolvedResult(int x)
 {
+	memset(num,0,sizeof(LL)*N);
+	memset(fac,0,sizeof(LL)*N);
 	char str[10005] = { 0 };
 	cnt=0;
     find(x,120);
     std::sort(fac,fac+cnt);
-    memset(num,0,sizeof(LL)*N);
-    memset(fac,0,sizeof(LL)*N);
     int k=0;
     for(int i=0;i<cnt;i++){
         if(i==0){
