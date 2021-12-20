@@ -25,21 +25,15 @@ void Permutation::InputArray(std::string str)
 	{
 		elements.push_back( atoi( str.c_str() ) );
 	}
-
-	for( auto value: elements )
-	{
-		printf( "%d\t", value );
-	}
-	printf( "\n" );
 }
 
 void Permutation::PrintCase()
 {
 	for( auto value: elements )
 	{
-		sprintf( strBuffer + strlen(strBuffer), "%d\t", value );
+		sprintf( strBuffer + strlen(strBuffer), "%d&#9;", value );
 	}
-	sprintf( strBuffer + strlen(strBuffer), "\n" );
+	sprintf( strBuffer + strlen(strBuffer), "<br>" );
 }
 
 std::string Permutation::GetPermutations()
@@ -49,7 +43,7 @@ std::string Permutation::GetPermutations()
 		PrintCase();
 		sum++;
 	}while(next_permutation(elements.begin(),elements.end()));
-	sprintf( strBuffer + strlen(strBuffer), "sum = %d\n", sum );
+	sprintf( strBuffer + strlen(strBuffer), "sum = %d", sum );
 
 	return std::string( strBuffer );
 }

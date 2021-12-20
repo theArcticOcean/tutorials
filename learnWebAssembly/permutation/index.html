@@ -1,24 +1,36 @@
 <html>
    <head>
       <!-- Load WebAssembly module -->
-      <script type="text/javascript" src="build_wasm/Resolver.js"></script>
-      <script src="check-for-tex.js" defer></script>
+      <script type="text/javascript" src="build_wasm/permutation.js"></script>
    </head>
    <body>
       <div>
-         Resolved Result 
-         <span id="answer"/>
+         Integer array (eg. 1 2 3):
+         <input type="text" id="inputArray" name="inputArray"></input><br><br>
+         <button id="submitButton" onclick="OnButtonDown()">Submit</button>
       </div>
+
+      <div style="border: 1px;">
+         <pre ame="result" id="result"></pre>
+         <!-- <output name="result" id="result"></output> -->
+      </div>
+
       <script>
+         var worker = null;
          // Wait for module to initialize,
-         createModule().then(({Resolver}) => {
-            const worker = new Resolver();
-            const x = 10024;
-            const result = worker.GetResolvedResult( x );
-            // Write the value of 'root' to the tag whose 'id' is equal to "answer"
-            console.log( result );
-            document.getElementById("answer").innerHTML = x.toString() + " = $" + result + "$";
+         createModule().then(({Permutation}) => {
+            worker = new Permutation();
          });
+            
+         function OnButtonDown()
+         {
+            var text = document.getElementById("inputArray").value;
+            console.log( text );
+
+            worker.InputArray( text );
+            const result = worker.GetPermutations();
+            document.getElementById("result").innerHTML = result;
+         }
       </script>
    </body>
 </html>
