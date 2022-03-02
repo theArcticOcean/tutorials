@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title>Test</title>
+<meta charset="utf-8"/>
+</head>
+<body>
+<script>
+// javascript object
+const importObject = {
+    env:{
+        memory: new WebAssembly.Memory({initial:1, maximum:10}) // 1 page at first.
+    }
+};
+// download wasm file and compile it
+WebAssembly.instantiateStreaming( fetch("GetPrimers.wasm"),
+    importObject ).then( result => {
+        const value = result.instance.exports._compute( 2, 3 );
+        console.log( ans );
+        alert( ans );
+    } );
+
+// async function fetchAndInstantiate() {
+//     const response = await fetch("GetPrimers.wasm");
+//     const buffer = await response.arrayBuffer();
+//     const obj = await WebAssembly.instantiate(buffer);
+//     const ans = obj.instance.exports.compute(2, 3);
+    
+//     console.log( ans );
+//     alert( ans );
+// }
+// fetchAndInstantiate();
+</script>
+</body>
+</html>
