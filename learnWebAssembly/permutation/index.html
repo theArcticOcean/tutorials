@@ -1,0 +1,36 @@
+<html>
+   <head>
+      <!-- Load WebAssembly module -->
+      <script type="text/javascript" src="build_wasm/permutation.js"></script>
+   </head>
+   <body>
+      <div>
+         Integer array (eg. 1 2 3):
+         <input type="text" id="inputArray" name="inputArray"></input><br><br>
+         <button id="submitButton" onclick="OnButtonDown()">Submit</button>
+      </div>
+
+      <div style="border: 1px;">
+         <pre ame="result" id="result"></pre>
+         <!-- <output name="result" id="result"></output> -->
+      </div>
+
+      <script>
+         var worker = null;
+         // Wait for module to initialize,
+         createModule().then(({Permutation}) => {
+            worker = new Permutation();
+         });
+            
+         function OnButtonDown()
+         {
+            var text = document.getElementById("inputArray").value;
+            console.log( text );
+
+            worker.InputArray( text );
+            const result = worker.GetPermutations();
+            document.getElementById("result").innerHTML = result;
+         }
+      </script>
+   </body>
+</html>

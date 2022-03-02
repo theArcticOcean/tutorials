@@ -1,0 +1,24 @@
+<html>
+   <head>
+      <!-- Load WebAssembly module -->
+      <script type="text/javascript" src="build_wasm/Resolver.js"></script>
+      <script src="check-for-tex.js" defer></script>
+   </head>
+   <body>
+      <div>
+         Resolved Result 
+         <span id="answer"/>
+      </div>
+      <script>
+         // Wait for module to initialize,
+         createModule().then(({Resolver}) => {
+            const worker = new Resolver();
+            const x = 10024;
+            const result = worker.GetResolvedResult( x );
+            // Write the value of 'root' to the tag whose 'id' is equal to "answer"
+            console.log( result );
+            document.getElementById("answer").innerHTML = x.toString() + " = $" + result + "$";
+         });
+      </script>
+   </body>
+</html>
