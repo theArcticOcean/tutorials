@@ -1,0 +1,32 @@
+<html>
+   <head>
+      <!-- Load WebAssembly module -->
+      <script type="text/javascript" src="build_wasm/passArrayToCPP.js"></script>
+   </head>
+   <body>
+      <div>
+         Result 
+         <span id="answer"/>
+      </div>
+      <script>
+        var worker;
+        var Module = {
+        onRuntimeInitialized: function () {
+            worker = new Module.Worker();
+            console.log( worker + " start work!" );
+
+            var values = new Int32Array([1, 2, 3, 4, 5]);
+            var heapSpace = Module._malloc(values.length * values.BYTES_PER_ELEMENT);
+            Module.HEAP8.set(values, heapSpace>>2); // int has 4 bytes
+
+            const result = worker.GetIntGum( heapSpace );
+            // Write the value of 'root' to the tag whose 'id' is equal to "answer"
+            console.log( "result " + result );
+            document.getElementById("answer").innerHTML = " = $" + result + "$";
+        },
+        };
+
+        var app = createModule( Module );
+      </script>
+   </body>
+</html>
