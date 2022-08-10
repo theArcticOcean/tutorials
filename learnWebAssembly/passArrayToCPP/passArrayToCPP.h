@@ -1,11 +1,16 @@
 #pragma once
 
-//#include <alltypes.h>
-
-typedef unsigned long uintptr_t;
+#include <string>
 
 class Worker
 {
 public:
-    int GetIntGum(uintptr_t arrayBuffer, int size);
+    Worker();
+
+    int GetIntSum(uintptr_t arrayBuffer, int size);
+    double GetDoubleSum(uintptr_t arrayBuffer, int size);
+    void ShowBoolArray(uintptr_t arrayBuffer, int size);
+    
+    uintptr_t GetIntArray();
+    uintptr_t GetFloatArray(int size);
 };
