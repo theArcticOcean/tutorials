@@ -41,11 +41,23 @@ if(EMSCRIPTEN)
     message("Configuring data directory for wasm..........")
 endif()
 
-set( cpps 
-    main.cpp
+set( Srcs 
+    worker.h
+    worker.cpp
     )
 
-add_executable(${PROJECT_NAME} ${cpps})
+if(EMSCRIPTEN)
+list(APPEND Srcs
+    binding.cpp
+)
+else()
+list(APPEND Srcs
+    main.cpp
+)
+endif()
+  
+
+add_executable(${PROJECT_NAME} ${Srcs})
 
 if (VTK_VERSION VERSION_LESS "8.9")
   # old system
