@@ -49,23 +49,23 @@
         }
 
         var resolveAfter2Seconds = function() {
-            console.log("starting slow promise");
+            console.log("> starting slow promise");
             return new Promise(resolve => {
                 setTimeout(function() {
-                resolve("slow");
-                console.log("slow promise is done");
+                resolve("> slow");
+                console.log("> slow promise is done");
                 }, 2000);
             });
         };
         async function asyncCall() {
-            console.log('calling');
+            console.log('> calling');
             const result = await resolveAfter2Seconds();
             console.log(result);
         }
 
         asyncCall();
 
-        console.log( "finish!" );
+        console.log( "> finish!" );
       </script>
    </body>
 </html>
