@@ -14,29 +14,29 @@ Worker::Worker()
 
 void Worker::Init()
 {
-    vtkSPtrNew( cone, vtkConeSource );
-    vtkSPtrNew( mapper, vtkPolyDataMapper );
-    mapper->SetInputConnection( cone->GetOutputPort() );
+    // vtkSPtrNew( cone, vtkConeSource );
+    // vtkSPtrNew( mapper, vtkPolyDataMapper );
+    // mapper->SetInputConnection( cone->GetOutputPort() );
 
-    vtkSPtrNew( actor, vtkActor );
-    actor->SetMapper( mapper );
+    // vtkSPtrNew( actor, vtkActor );
+    // actor->SetMapper( mapper );
 
-    vtkSPtrNew( renderer, vtkRenderer );
-    renderer->AddActor(actor);
-    renderer->SetBackground( 0, 0, 0 );
+    // vtkSPtrNew( renderer, vtkRenderer );
+    // renderer->AddActor(actor);
+    // renderer->SetBackground( 0, 0, 0 );
 
-    m_RenderWindow->AddRenderer( renderer );
-    m_RenderWindowInteractor->SetRenderWindow( m_RenderWindow );
+    // m_RenderWindow->AddRenderer( renderer );
+    // m_RenderWindowInteractor->SetRenderWindow( m_RenderWindow );
 
-    renderer->ResetCamera();
-    m_RenderWindow->Render();
+    // renderer->ResetCamera();
+    // m_RenderWindow->Render();
 
     std::cout << "Init!\n";
 }
 
 void Worker::Start()
 {
-    m_RenderWindowInteractor->Start();
+    //m_RenderWindowInteractor->Start();
 
     std::cout << "Start!\n";
 }

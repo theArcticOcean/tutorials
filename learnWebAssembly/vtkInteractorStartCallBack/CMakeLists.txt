@@ -17,12 +17,11 @@ if(EMSCRIPTEN)
   set(emscripten_options)
   list(APPEND emscripten_options
     "--bind"
-    "-O3"
-    "-g"
+    #"-O3"
+    #"-g"
     "-DLOG_OFF"
     "SHELL:-s USE_SDL=2"
     "SHELL:-s EXPORTED_RUNTIME_METHODS=['allocate,stringToUTF8,UTF8ToString,FS,intArrayFromString']"
-    "SHELL:-s EXTRA_EXPORTED_RUNTIME_METHODS=['ALLOC_NORMAL']"
     "SHELL:-s -fdebug-compilation-dir=."
     "SHELL:-s EXPORT_NAME=tester"
     "SHELL:-s ALLOW_MEMORY_GROWTH=1"
