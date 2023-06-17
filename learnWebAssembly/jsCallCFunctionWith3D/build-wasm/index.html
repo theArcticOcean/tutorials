@@ -1,0 +1,71 @@
+<html>
+   <head>
+      <!-- Load WebAssembly module -->
+      <script type="text/javascript" src="wasmTester.js"></script>
+   </head>
+   <body>
+      <canvas id="canvas" style="position: absolute; left: 0; top: 0; width:100%; height:100%; z-index: 1;" tabindex=-1></canvas>
+      <button id="button" style="position: absolute; left: 10; top: 10; width: 80px; height:40px; z-index: 1;" onclick="CallCFunction()">Test</button>
+      <script>
+        // forbid right press event in browser.
+        document.oncontextmenu = function () {
+        return false;
+        }
+        
+        var Module = {
+            canvas: (function() {
+                var canvas = document.getElementById('canvas');
+                canvas.addEventListener(
+                "webglcontextlost",
+                function(e) {
+                    console.error('WebGL context lost. You will need to reload the page.');
+                    e.preventDefault();
+                },
+                false
+                );
+                canvas.addEventListener(
+                "mouseover",
+                function(event) {
+                    canvas.focus();
+                }
+                );
+                canvas.focus();
+                return canvas;
+            })(),
+            onRuntimeInitialized:  function() {
+                console.log('initialized');
+
+                Module._setup();
+            },
+        };
+
+        var app = tester(Module);
+        console.log('App created');
+
+        function CallCFunction()
+        {
+            var result = Module._compute(2, 3);
+            console.log( "result: ", result );
+        }
+
+        var resolveAfter2Seconds = function() {
+            console.log("> starting slow promise");
+            return new Promise(resolve => {
+                setTimeout(function() {
+                resolve("> slow");
+                console.log("> slow promise is done");
+                }, 2000);
+            });
+        };
+        async function asyncCall() {
+            console.log('> calling');
+            const result = await resolveAfter2Seconds();
+            console.log(result);
+        }
+
+        asyncCall();
+
+        console.log( "> finish!" );
+      </script>
+   </body>
+</html>

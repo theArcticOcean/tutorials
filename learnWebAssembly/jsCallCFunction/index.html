@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title>Test</title>
+<meta charset="utf-8"/>
+</head>
+<body>
+<script async type="text/javascript" src="Tester.js"></script>
+<button id="button" onclick="Calculate()">Calculate</button>
+<script>
+    var instance = null;
+    async function fetchAndInstantiate() {
+        const response = await fetch("Tester.wasm");
+        const buffer = await response.arrayBuffer();
+        const obj = await WebAssembly.instantiate(buffer);
+        instance = obj.instance;
+    }
+    fetchAndInstantiate();
+
+    function Calculate()
+    {
+        console.log( "start" );
+        const ans = instance.exports.compute(2, 10);
+        console.log( "finish" );
+        console.log( ans );
+    }
+</script>
+</body>
+</html>
