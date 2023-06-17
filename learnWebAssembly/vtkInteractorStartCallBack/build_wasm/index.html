@@ -26,9 +26,11 @@
          })(),
          onRuntimeInitialized: function () {
             workerObj = new Module.Worker();
-            // workerObj.Init();
-            // console.log( "StartWork!" );
-            // workerObj.Start();
+            workerObj.Init();
+            console.log( "StartWork!" );
+            workerObj.Start();
+
+            console.log( "Finish init!" );
          },
          };
 
