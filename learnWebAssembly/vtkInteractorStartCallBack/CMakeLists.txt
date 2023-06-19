@@ -46,6 +46,8 @@ endif()
 set( Srcs 
     worker.h
     worker.cpp
+    UInteractor.h
+    UInteractor.cpp
     )
 
 if(EMSCRIPTEN)

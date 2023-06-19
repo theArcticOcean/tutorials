@@ -13,6 +13,7 @@
 #ifdef __EMSCRIPTEN__
 #include "vtkSDL2OpenGLRenderWindow.h"
 #include "vtkSDL2RenderWindowInteractor.h"
+#include "UInteractor.h"
 #endif // __EMSCRIPTEN__
 
 #define vtkSPtr vtkSmartPointer
@@ -31,7 +32,7 @@ public:
 protected:
 
 #ifdef __EMSCRIPTEN__
-    vtkSPtr<vtkSDL2RenderWindowInteractor> m_RenderWindowInteractor;
+    vtkSPtr<UInteractor> m_RenderWindowInteractor;
     vtkSPtr<vtkSDL2OpenGLRenderWindow> m_RenderWindow;
 #else
     vtkSPtr<vtkRenderWindowInteractor> m_RenderWindowInteractor;
