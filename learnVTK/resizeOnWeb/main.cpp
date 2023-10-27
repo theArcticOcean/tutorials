@@ -6,11 +6,13 @@
 #include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkPolyDataMapper.h>
+#include <vtkCallbackCommand.h>
 #include <vtkRenderWindowInteractor.h>
 
 #ifdef __EMSCRIPTEN__
 #include "vtkSDL2OpenGLRenderWindow.h"
 #include "vtkSDL2RenderWindowInteractor.h"
+#include <emscripten/emscripten.h>
 #endif // __EMSCRIPTEN__
 
 
@@ -19,8 +21,17 @@
 
 using namespace std;
 
+void CallbackFunction(vtkObject* caller,
+                        long unsigned int vtkNotUsed(eventId),
+                        void* vtkNotUsed(clientData),
+                        void* vtkNotUsed(callData))
+{
+    std::cout << "rezie: " << std::endl;
+}
+
 int main()
 {
+    setbuf(stdout,NULL);
     vtkSPtrNew( cone, vtkConeSource );
     vtkSPtrNew( mapper, vtkPolyDataMapper );
     mapper->SetInputConnection( cone->GetOutputPort() );
@@ -39,8 +50,18 @@ int main()
 #endif
     renderWindow->AddRenderer( renderer );
 
+    vtkSmartPointer<vtkCallbackCommand> cbObj = vtkSmartPointer<vtkCallbackCommand>::New();
+    cbObj->SetCallback( CallbackFunction );
+    renderWindow->AddObserver(vtkCommand::WindowResizeEvent, cbObj);
+
 #ifdef __EMSCRIPTEN__
     vtkSPtrNew(renderWindowInteractor, vtkSDL2RenderWindowInteractor);
+
+    EM_ASM({
+        window.addEventListener("resize", function() { // it make sure VTK listen for it
+            console.log( "resize event!" );
+        });
+    });
 #else
     vtkSPtrNew(renderWindowInteractor, vtkRenderWindowInteractor);
 #endif
