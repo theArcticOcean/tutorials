@@ -26,7 +26,7 @@ void CallbackFunction(vtkObject* caller,
                         void* vtkNotUsed(clientData),
                         void* vtkNotUsed(callData))
 {
-    std::cout << "rezie: " << std::endl;
+    std::cout << "resize: " << std::endl;
 }
 
 int main()
