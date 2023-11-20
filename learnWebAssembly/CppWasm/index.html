@@ -1,0 +1,24 @@
+<html>
+   <head>
+      <!-- Load WebAssembly module -->
+      <script type="text/javascript" src="build_wasm/CppWasm.js"></script>
+   </head>
+   <body>
+      <script>
+        function print()
+        {
+            console.log("hello world!");
+        }
+
+        var worker;
+        var Module = {
+        onRuntimeInitialized: function () {
+            worker = new Module.Worker();
+            console.log( worker + " start work!" );
+        },
+        };
+
+        var app = createModule( Module );
+      </script>
+   </body>
+</html>
