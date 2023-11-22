@@ -34,12 +34,16 @@ void Worker::Init()
     std::cout << "Init!\n";
 }
 
+/**
+ * @brief   the interface is used in web page
+ * 
+ * @return  nothing
+ */
 void Worker::ChangeRenderWindow()
 {
     //m_RenderWindowInteractor->TerminateApp();
     
     std::cout << "m_Renderer: " << m_Renderer << std::endl;
-    //m_Renderer->Render();
     std::cout << "m_RenderWindowInteractor: " << m_RenderWindowInteractor << std::endl;
 
     m_Renderer = vtkSPtr<vtkRenderer>::New(); // need it!
