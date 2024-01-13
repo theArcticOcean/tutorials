@@ -50,13 +50,24 @@ void Worker::ChangeRenderWindow()
     m_Renderer->AddActor(m_Actor);
     m_Renderer->SetBackground( 0, 0, 0 );
 
-    m_RenderWindow = vtkSPtr<vtkSDL2OpenGLRenderWindow>::New(); // need
-    m_RenderWindow->AddRenderer( m_Renderer );
+    vtkSPtr<vtkSDL2OpenGLRenderWindow> newWin = vtkSPtr<vtkSDL2OpenGLRenderWindow>::New(); // need
+    newWin->AddRenderer( m_Renderer );
     //m_RenderWindowInteractor = vtkSPtr<vtkSDL2RenderWindowInteractor>::New();
-    m_RenderWindowInteractor->SetRenderWindow( m_RenderWindow );
+    m_RenderWindowInteractor->SetRenderWindow( newWin );
 
-    m_Renderer->ResetCamera();
+    //m_Renderer->ResetCamera();
+    
+    //newWin->Render();
+    //m_RenderWindow = newWin; // we can't `m_RenderWindow = newWin` after newWin->render because the error:
+/*
+Uncaught TypeError: Cannot read properties of null (reading 'bindRenderbuffer')
+    at _glBindRenderbuffer (changeCanvasForWASM.js:8174:13)
+    at vtkRenderbuffer::Resize(:4002/unsigned int, unsigned int) (http://localhost:4002/changeCanvasForWASM.wasm)
+*/ 
+
+    m_RenderWindow = newWin;
     m_RenderWindow->Render();
+
     m_RenderWindowInteractor->Start();
 }
 
