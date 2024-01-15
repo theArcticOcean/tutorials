@@ -1,0 +1,46 @@
+<html>
+   <head>
+      <!-- Load WebAssembly module -->
+      <script type="text/javascript" src="vtkPropPickerInWasm.js"></script>
+   </head>
+   <body>
+      <canvas id="canvas" style="position: absolute; left: 0; top: 0; width:80%; height:100%"></canvas>
+      
+      <button id="button" style="position: absolute; left: 0; bottom: 0;"> update </button>
+
+      <script>
+        function $(id){ return document.getElementById(id); }
+
+        var workerObj = null;
+        var Module = {
+         canvas: (function () {
+           var canvas = document.getElementById('canvas');
+           canvas.addEventListener(
+             "webglcontextlost",
+             function (e) {
+               console.error('WebGL context lost. You will need to reload the page.');
+               e.preventDefault();
+             },
+             false
+           );
+           return canvas;
+         })(),
+         onRuntimeInitialized: function () {
+            workerObj = new Module.Worker();
+            workerObj.Init();
+            workerObj.Start();
+            console.log( "StartWork!" );
+         },
+         };
+
+        var app = tester(Module);
+        console.log('App created');
+
+        // change left and right canvases.
+        $('button').onclick = function()
+        {
+          console.log( "onclick!" );
+        }
+      </script>
+   </body>
+</html>
