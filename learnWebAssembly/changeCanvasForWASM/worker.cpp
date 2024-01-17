@@ -65,6 +65,16 @@ Uncaught TypeError: Cannot read properties of null (reading 'bindRenderbuffer')
     at vtkRenderbuffer::Resize(:4002/unsigned int, unsigned int) (http://localhost:4002/changeCanvasForWASM.wasm)
 */ 
 
+
+	vtkSDL2OpenGLRenderWindow* oldSDLWin = vtkSDL2OpenGLRenderWindow::SafeDownCast( m_RenderWindow );
+    oldSDLWin->ReleaseGraphicsResources( oldSDLWin ); 
+/*
+myDataModel;.js:8 Uncaught TypeError: Cannot read properties of null (reading 'bindFramebuffer')
+    at _glBindFramebuffer (myDataModel;.js:8:211681)
+    at UDesignCommonDataModel.wasm:0x4f6ddb
+    at UDesignCommonDataModel.wasm:0x4e5e56
+*/
+
     m_RenderWindow = newWin;
     m_RenderWindow->Render();
 
