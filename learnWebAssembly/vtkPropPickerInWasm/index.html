@@ -1,11 +1,10 @@
 <html>
    <head>
       <!-- Load WebAssembly module -->
-      <script type="text/javascript" src="changeCanvasForWASM.js"></script>
+      <script type="text/javascript" src="vtkPropPickerInWasm.js"></script>
    </head>
    <body>
-      <canvas id="canvas" style="position: absolute; left: 0; top: 0; width:500px; height:500px"></canvas>
-      <canvas id="canvas1" style="position: absolute; right: 0; top: 0; width:500px; height:500px"></canvas>
+      <canvas id="canvas" style="position: absolute; left: 0; top: 0; width:80%; height:100%"></canvas>
       
       <button id="button" style="position: absolute; left: 0; bottom: 0;"> update </button>
 
@@ -40,16 +39,7 @@
         // change left and right canvases.
         $('button').onclick = function()
         {
-          workerObj.Terminate();
-
-          //$('canvas').hidden="hidden";
-          $('canvas').id = "canvas2";
-          $('canvas1').id = "canvas";
-          Module.canvas = $('canvas');
-          $('canvas2').id = "canvas1";
-
-          workerObj.ChangeRenderWindow();
-          console.log( "StartWork!" );
+          console.log( "onclick!" );
         }
       </script>
    </body>
