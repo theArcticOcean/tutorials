@@ -1,0 +1,469 @@
+main.js:27 Total workers: 0
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 0.27%
+main.js:27 Total workers: 1
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 0.15%
+main.js:27 Total workers: 2
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 0.15%
+main.js:27 Total workers: 3
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 0.15%
+main.js:27 Total workers: 4
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 0.15%
+main.js:27 Total workers: 5
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 0.15%
+main.js:27 Total workers: 6
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 0.15%
+main.js:27 Total workers: 7
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 0.15%
+main.js:27 Total workers: 8
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 0.15%
+main.js:27 Total workers: 9
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 0.15%
+main.js:27 Total workers: 11
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 1.62%
+main.js:27 Total workers: 13
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 1.62%
+main.js:27 Total workers: 16
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 1.62%
+main.js:27 Total workers: 20
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 1.62%
+main.js:27 Total workers: 25
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 1.62%
+main.js:27 Total workers: 31
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 1.62%
+main.js:27 Total workers: 38
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 1.62%
+main.js:27 Total workers: 39
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 1.62%
+main.js:27 Total workers: 47
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 1.62%
+main.js:27 Total workers: 56
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 1.77%
+main.js:27 Total workers: 58
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 1.77%
+main.js:27 Total workers: 68
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 1.77%
+main.js:27 Total workers: 71
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 1.77%
+main.js:27 Total workers: 75
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 1.77%
+main.js:27 Total workers: 80
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 1.77%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 86
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 1.77%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 93
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 1.77%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 101
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 1.77%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 110
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 1.77%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 120
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 1.77%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Parent Worker 0: {"type":"info","message":"Parent worker 0 started with 10 child workers"}
+main.js:27 Parent Worker 1: {"type":"info","message":"Parent worker 1 started with 10 child workers"}
+favicon.ico:1 
+            
+            
+           GET http://localhost:4002/favicon.ico net::ERR_EMPTY_RESPONSE
+main.js:27 Total workers: 121
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 1.94%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 123
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 1.94%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 126
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 1.94%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 130
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 1.94%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 135
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 1.94%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 141
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 1.94%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 148
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 1.94%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 156
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 1.94%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 165
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 1.94%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 175
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 1.94%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Parent Worker 2: {"type":"info","message":"Parent worker 2 started with 10 child workers"}
+main.js:27 Parent Worker 0: {"childId":0,"data":{"type":"info","message":"Child worker 0 started"}}
+content.js:5160 Uncaught (in promise) {name: 'i', httpError: false, httpStatus: 200, httpStatusText: '', code: 403, …}
+init @ content.js:5160
+await in init
+init @ content.js:5124
+init @ content.js:5130
+initFirstLevelControllers @ content.js:5176
+await in initFirstLevelControllers
+init @ content.js:5715
+(anonymous) @ content.js:5715
+Promise.then
+GRt @ content.js:5715
+(anonymous) @ content.js:5715
+(anonymous) @ content.js:5715
+main.js:27 Total workers: 176
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.55%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 178
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.55%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 181
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.55%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 185
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.55%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 190
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.55%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 196
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.55%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 203
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.55%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 211
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.55%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 220
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.55%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 230
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.55%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Parent Worker 3: {"type":"info","message":"Parent worker 3 started with 10 child workers"}
+index.html:1 Uncaught (in promise) {name: 'i', httpError: false, httpStatus: 200, httpStatusText: '', code: 403, …}
+index.html:1 Uncaught (in promise) {name: 'i', httpError: false, httpStatus: 200, httpStatusText: '', code: 403, …}
+main.js:27 Parent Worker 0: {"childId":1,"data":{"type":"info","message":"Child worker 1 started"}}
+main.js:27 Total workers: 231
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.55%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 233
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.55%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 236
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.55%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 240
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.55%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 245
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.55%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 251
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.55%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 258
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.55%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 266
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.55%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 275
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.55%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 285
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.55%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Parent Worker 4: {"type":"info","message":"Parent worker 4 started with 10 child workers"}
+main.js:27 Parent Worker 1: {"childId":0,"data":{"type":"info","message":"Child worker 0 started"}}
+main.js:27 Total workers: 286
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 288
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 291
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 295
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 300
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 306
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 313
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 321
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 330
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 340
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Parent Worker 5: {"type":"info","message":"Parent worker 5 started with 10 child workers"}
+main.js:27 Parent Worker 0: {"childId":2,"data":{"type":"info","message":"Child worker 2 started"}}
+main.js:27 Total workers: 341
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 343
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 346
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 350
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 355
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 361
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 368
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 376
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 385
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 395
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Parent Worker 6: {"type":"info","message":"Parent worker 6 started with 10 child workers"}
+main.js:27 Parent Worker 0: {"childId":3,"data":{"type":"info","message":"Child worker 3 started"}}
+main.js:27 Total workers: 396
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 398
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 401
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 405
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 410
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 416
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 423
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 431
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 440
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 450
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Parent Worker 7: {"type":"info","message":"Parent worker 7 started with 10 child workers"}
+main.js:27 Parent Worker 0: {"childId":4,"data":{"type":"info","message":"Child worker 4 started"}}
+main.js:27 Total workers: 451
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 453
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 456
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 460
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 465
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 471
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 478
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 486
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 495
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 505
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Parent Worker 8: {"type":"info","message":"Parent worker 8 started with 10 child workers"}
+main.js:27 Parent Worker 0: {"childId":5,"data":{"type":"info","message":"Child worker 5 started"}}
+main.js:27 Total workers: 506
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 508
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 511
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 515
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 520
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 526
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 533
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 541
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 550
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Total workers: 560
+main.js:27 CPU cores: 20
+main.js:27 Memory usage: 2.58%
+main.js:27 WARNING: Reached maximum worker limit!
+main.js:27 Parent Worker 9: {"type":"info","message":"Parent worker 9 started with 10 child workers"}
+main.js:27 Parent Worker 0: {"childId":6,"data":{"type":"info","message":"Child worker 6 started"}}
+main.js:27 Parent Worker 0: {"childId":7,"data":{"type":"info","message":"Child worker 7 started"}}
+main.js:27 Parent Worker 0: {"childId":8,"data":{"type":"info","message":"Child worker 8 started"}}
+main.js:27 Parent Worker 0: {"childId":9,"data":{"type":"info","message":"Child worker 9 started"}}
+main.js:27 Parent Worker 1: {"childId":1,"data":{"type":"info","message":"Child worker 1 started"}}
+main.js:27 Parent Worker 1: {"childId":2,"data":{"type":"info","message":"Child worker 2 started"}}
+main.js:27 Parent Worker 1: {"childId":3,"data":{"type":"info","message":"Child worker 3 started"}}
+main.js:27 Parent Worker 1: {"childId":4,"data":{"type":"info","message":"Child worker 4 started"}}
+main.js:27 Parent Worker 1: {"childId":5,"data":{"type":"info","message":"Child worker 5 started"}}
+main.js:27 Parent Worker 1: {"childId":6,"data":{"type":"info","message":"Child worker 6 started"}}
+main.js:27 Parent Worker 1: {"childId":7,"data":{"type":"info","message":"Child worker 7 started"}}
+main.js:27 Parent Worker 1: {"childId":8,"data":{"type":"info","message":"Child worker 8 started"}}
+main.js:27 Parent Worker 1: {"childId":9,"data":{"type":"info","message":"Child worker 9 started"}}
+main.js:27 Parent Worker 2: {"childId":0,"data":{"type":"info","message":"Child worker 0 started"}}
+main.js:27 Parent Worker 2: {"childId":1,"data":{"type":"info","message":"Child worker 1 started"}}
+main.js:27 Parent Worker 2: {"childId":2,"data":{"type":"info","message":"Child worker 2 started"}}
+main.js:27 Parent Worker 2: {"childId":3,"data":{"type":"info","message":"Child worker 3 started"}}
