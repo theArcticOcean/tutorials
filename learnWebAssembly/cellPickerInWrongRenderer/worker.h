@@ -38,5 +38,6 @@ protected:
 #endif
     vtkSPtr<vtkActor> m_Actor;
     vtkSPtr<vtkRenderer> m_Renderer;
+    vtkSPtr<vtkRenderer> m_TopRenderer;
     vtkSPtr<vtkCellPicker> m_Picker;
 };

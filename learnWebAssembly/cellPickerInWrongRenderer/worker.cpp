@@ -1,7 +1,10 @@
 #include "worker.h"
 #include "Log.hpp"
 #include "CustomIteractorStyle.h"
+
+#ifdef __EMSCRIPTEN__
 #include <emscripten.h>
+#endif
 
 Worker::Worker()
 {
@@ -27,10 +30,17 @@ void Worker::Init()
     m_Actor->SetMapper( mapper );
 
     m_Renderer = vtkSPtr<vtkRenderer>::New();
-    m_Renderer->AddActor(m_Actor);
-    m_Renderer->SetBackground( 0, 0, 0 );
+    m_Renderer->SetBackground( 0, 0.2, 0 );
+    m_Renderer->SetLayer( 0 );
+
+    m_TopRenderer = vtkSPtr<vtkRenderer>::New();
+    m_TopRenderer->SetLayer( 1 );
+    m_TopRenderer->SetActiveCamera( m_Renderer->GetActiveCamera() );
+    m_TopRenderer->AddActor(m_Actor);
 
     m_RenderWindow->AddRenderer( m_Renderer );
+    m_RenderWindow->AddRenderer( m_TopRenderer );
+    m_RenderWindow->SetNumberOfLayers( 2 );
     m_RenderWindowInteractor->SetRenderWindow( m_RenderWindow );
 
     vtkSPtrNew( iStyle, CustomIteractorStyle );
@@ -55,7 +65,8 @@ void Worker::Start()
 void Worker::OnLeftButtonDown()
 {
     auto eventPos = m_RenderWindowInteractor->GetEventPosition();
-    m_Picker->Pick(eventPos[0], eventPos[1], 0, m_Renderer);
+    auto pickResult = m_Picker->Pick(eventPos[0], eventPos[1], 0, m_Renderer);
+    Log( IInfo, "pickResult: ", pickResult );
     if (m_Picker->GetPointId() > -1 )
     {
         vtkSPtr<vtkActor> actor = m_Picker->GetActor();
