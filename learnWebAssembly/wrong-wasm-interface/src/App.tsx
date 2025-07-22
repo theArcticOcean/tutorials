@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-//import createModule from 'cppWasm.js';
 import './App.css';
+import { createWorker2 } from './workerUtils.ts'; // Import the new function
 
 // Simple type for our WASM module
 interface WasmModule {
   Worker: {
     new(): any;
   };
+
+  worker: Worker
 }
 
 function App() {
@@ -17,8 +19,6 @@ function App() {
 
   // Load WASM module when component mounts
   useEffect(() => {
-    console.error = () => {};
-
     const loadWasm = async () => {
       try {
         console.log('Loading WASM module...');
@@ -56,15 +56,34 @@ function App() {
       console.error('WASM module not loaded yet');
       return;
     }
+    const cppObj = new wasmModule.Worker();
+    wasmModule.worker = cppObj; // Store the Worker instance in the wasmModule
+    console.log('Worker created:', cppObj);
+    setWorkerCount(prev => prev + 1);
+    cppObj.ShowMyself();
+  };
 
+  // Example usage function for createWorker2
+  const handleCreateWorkerAsync = async () => {
     try {
-      const cppObj = new wasmModule.Worker();
-      console.log('Worker created:', cppObj);
-      setWorkerCount(prev => prev + 1);
-      cppObj.ShowMyself();
-    } catch (err) {
-      console.error('Failed to create worker:', err);
+      const worker = await createWorker2(wasmModule, setWorkerCount);
+      console.log('Successfully created worker:', worker);
+    } catch (error) {
+      console.error('Error creating worker:', error);
     }
+  };
+
+  // const handleCreateWorkerAsync2 = () => {
+  //   wasmModule?.worker.ShowMyself();
+  // };
+  // ;(window as any).handleCreateWorkerAsync2 = handleCreateWorkerAsync2;
+
+  const handleCreateWorkerAsync2 = () => {
+    createWorker2(wasmModule, setWorkerCount)
+    .then((val) => {})
+    .catch((error) => { // if we catch here and don't output log, the browser will just hang and not show any error log on the console
+      console.error("createWorker2 error: ", error)
+    })
   };
 
   return (
@@ -89,6 +108,9 @@ function App() {
             <p>✅ WASM module loaded successfully!</p>
             <button onClick={createWorker} style={{ margin: '10px', padding: '10px' }}>
               Create Worker
+            </button>
+            <button onClick={handleCreateWorkerAsync2} style={{ margin: '10px', padding: '10px' }}>
+              Create Worker Async
             </button>
             <p>Workers created: {workerCount}</p>
           </div>

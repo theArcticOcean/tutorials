@@ -7,5 +7,6 @@ EMSCRIPTEN_BINDINGS(worker) {
    class_<Worker>("Worker")
       .constructor()
       .function("ShowMyself", &Worker::ShowMyself)
+      .function("OnInit", &Worker::OnInit)
       ;
 }
