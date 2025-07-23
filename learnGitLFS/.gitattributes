@@ -1,0 +1,2 @@
+test.wasm filter=lfs diff=lfs merge=lfs -text
+test.js filter=lfs diff=lfs merge=lfs -text
