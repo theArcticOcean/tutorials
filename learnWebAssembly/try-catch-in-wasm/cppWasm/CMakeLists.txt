@@ -19,24 +19,30 @@ endif()
 if(EMSCRIPTEN)
   set(emscripten_options)
   list(APPEND emscripten_options
-    "--bind"
     "-O3"
     "-g"
     "-sNO_DISABLE_EXCEPTION_CATCHING" # allow catch expection from c++ wasm
-    "SHELL:-s EXPORTED_RUNTIME_METHODS=['allocate,stringToUTF8,UTF8ToString,intArrayFromString']"
-    "SHELL:-s -fdebug-compilation-dir=."
-    "SHELL:-s EXPORT_NAME=createModule"
-    "SHELL:-s ALLOW_MEMORY_GROWTH=1"
-    "SHELL:-s DEMANGLE_SUPPORT=1"
-    "SHELL:-s EMULATE_FUNCTION_POINTER_CASTS=0"
-    "SHELL:-s ERROR_ON_UNDEFINED_SYMBOLS=0"
-    "SHELL:-s MODULARIZE=1"
-    "SHELL:-s WASM=1"
-    "SHELL:-s --no-heap-copy"
-    "SHELL:-s INITIAL_MEMORY=200MB"
-    "SHELL:-s MAXIMUM_MEMORY=4000MB"
-    "SHELL:-s ASSERTIONS=2"
   )
+
+  set(emscripten_link_options)
+  list(APPEND emscripten_link_options
+  "--bind"
+  "-sNO_DISABLE_EXCEPTION_CATCHING" # allow catch expection from c++ wasm
+  "SHELL:-s EXPORTED_RUNTIME_METHODS=['allocate,stringToUTF8,UTF8ToString,intArrayFromString']"
+  "SHELL:-s -fdebug-compilation-dir=."
+  "SHELL:-s EXPORT_NAME=createModule"
+  "SHELL:-s ALLOW_MEMORY_GROWTH=1"
+  "SHELL:-s DEMANGLE_SUPPORT=1"
+  "SHELL:-s EMULATE_FUNCTION_POINTER_CASTS=0"
+  "SHELL:-s ERROR_ON_UNDEFINED_SYMBOLS=0"
+  "SHELL:-s MODULARIZE=1"
+  "SHELL:-s WASM=1"
+  "SHELL:-s --no-heap-copy"
+  "SHELL:-s INITIAL_MEMORY=200MB"
+  "SHELL:-s MAXIMUM_MEMORY=4000MB"
+  "SHELL:-s ASSERTIONS=2"
+  )
+
 endif()
 
 add_executable(${PROJECT_NAME} ${Hdrs} ${Srcs})
@@ -48,5 +54,5 @@ target_compile_options(${PROJECT_NAME}
 
 target_link_options(${PROJECT_NAME}
   PUBLIC
-    ${emscripten_options}
+    ${emscripten_link_options}
 )
