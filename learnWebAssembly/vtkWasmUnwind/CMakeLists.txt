@@ -57,7 +57,7 @@ if(EMSCRIPTEN)
 
 endif()
 
-add_executable(${PROJECT_NAME} ${Hdrs} ${Srcs} ${VTK_LIBRARIES})
+add_executable(${PROJECT_NAME} ${Hdrs} ${Srcs})
 
 if (VTK_VERSION VERSION_LESS "8.9")
   # old system
@@ -81,4 +81,4 @@ target_link_options(${PROJECT_NAME}
     ${emscripten_link_options}
 )
 
-target_link_libraries( ${PROJECT_NAME} ${VTK_LIBRARIES} ${LINK_FLAGS} )
+target_link_libraries( ${PROJECT_NAME} ${VTK_LIBRARIES} )

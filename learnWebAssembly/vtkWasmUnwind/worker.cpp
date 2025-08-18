@@ -1,6 +1,5 @@
 #include "worker.h"
 #include "Log.hpp"
-#include "CustomIteractorStyle.h"
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
@@ -49,6 +48,4 @@ void Worker::Start()
 
 void Worker::OnLeftButtonDown()
 {
-    auto eventPos = m_RenderWindowInteractor->GetEventPosition();
-    Log( IInfo, "pickResult: ", pickResult );
 }
