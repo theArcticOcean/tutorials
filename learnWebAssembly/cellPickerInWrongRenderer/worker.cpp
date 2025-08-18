@@ -73,3 +73,17 @@ void Worker::OnLeftButtonDown()
         Log( IInfo, "actor: ", actor );
     }
 }
+
+void Worker::PrintVector( std::vector<int> vec )
+{
+    for( auto value: vec )
+    {
+        Log( IInfo, "value: ", value );
+    }
+}
+
+std::vector<int> Worker::GetVector()
+{
+    std::vector<int> result = { 1, 2, 3 };
+    return result;
+}

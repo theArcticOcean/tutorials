@@ -45,6 +45,18 @@
         $('button').onclick = function()
         {
           console.log( "onclick!" );
+          const vecObj = new Module.IntVector();
+          vecObj.push_back( 1 );
+          vecObj.push_back( 2 );
+          vecObj.push_back( 3 );
+          workerObj.PrintVector( vecObj );
+
+          const vecInWasm = workerObj.GetVector();
+          for( let i = 0; i < vecInWasm.size(); ++i )
+          {
+            const value = vecInWasm.get( i );
+            console.log( "value: ", value );
+          }
         }
       </script>
    </body>

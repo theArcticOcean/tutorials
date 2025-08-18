@@ -11,6 +11,7 @@
 #include <vtkRenderWindowInteractor.h>
 #include <vtkPropPicker.h>
 #include <vtkCellPicker.h>
+#include <vector>
 
 #ifdef __EMSCRIPTEN__
 #include "vtkSDL2OpenGLRenderWindow.h"
@@ -28,6 +29,9 @@ public:
     void Init();
     void Start();
     void OnLeftButtonDown();
+    
+    void PrintVector( std::vector<int> vec );
+    std::vector<int> GetVector();
 protected:
 #ifdef __EMSCRIPTEN__
     vtkSPtr<vtkSDL2RenderWindowInteractor> m_RenderWindowInteractor;

@@ -8,5 +8,9 @@ EMSCRIPTEN_BINDINGS(worker) {
       .constructor()
       .function("Init", &Worker::Init)
       .function("Start", &Worker::Start)
+      .function("PrintVector", &Worker::PrintVector)
+      .function("GetVector", &Worker::GetVector)
       ;
+
+   register_vector<int>("IntVector");
 }

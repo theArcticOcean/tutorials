@@ -1,10 +1,18 @@
 cmake_minimum_required(VERSION 3.5)
 
 set(CMAKE_BUILD_TYPE Release)
-project(vtkWasmUnwind LANGUAGES CXX)
+project(vtkWasmUnwind)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+if (VTK_VERSION VERSION_LESS "8.9") #"9.0.3"
+    find_package( VTK REQUIRED )
+else ()
+    find_package( VTK COMPONENTS vtkCommonCore vtkRenderingCore
+        vtkInteractionStyle vtkRenderingOpenGL2 vtkFiltersSources
+        vtkRenderingFreeType IOGeometry )
+endif()
 
 set( Hdrs Log.hpp worker.h )
 set( Srcs worker.cpp )
@@ -15,6 +23,10 @@ if(EMSCRIPTEN)
   )
 endif()
 
+include_directories(
+    ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
 if(EMSCRIPTEN)
   set(emscripten_options)
@@ -45,7 +57,19 @@ if(EMSCRIPTEN)
 
 endif()
 
-add_executable(${PROJECT_NAME} ${Hdrs} ${Srcs})
+add_executable(${PROJECT_NAME} ${Hdrs} ${Srcs} ${VTK_LIBRARIES})
+
+if (VTK_VERSION VERSION_LESS "8.9")
+  # old system
+  include(${VTK_USE_FILE})
+else ()
+  # vtk_module_autoinit is needed
+  message("autoinit module for higher version vtk")
+  vtk_module_autoinit(
+    TARGETS ${PROJECT_NAME}
+    MODULES ${VTK_LIBRARIES}
+    )
+endif ()
 
 target_compile_options(${PROJECT_NAME}
   PUBLIC
@@ -56,3 +80,5 @@ target_link_options(${PROJECT_NAME}
   PUBLIC
     ${emscripten_link_options}
 )
+
+target_link_libraries( ${PROJECT_NAME} ${VTK_LIBRARIES} ${LINK_FLAGS} )
