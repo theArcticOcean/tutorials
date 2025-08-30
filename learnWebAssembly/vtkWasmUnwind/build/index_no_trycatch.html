@@ -35,7 +35,7 @@
             workerObj.Init();
             console.log( "StartWork!" );
             // 移除了try-catch块
-            //workerObj.Start();
+            workerObj.Start();
          },
         };
 
@@ -46,9 +46,25 @@
         // change left and right canvases.
         $('button').onclick = function()
         {
-            workerObj.Start(); // move to here!
+            //workerObj.Start(); // move to here!
             console.log( "button clicked!" );
-            workerObj.Update();
+            //workerObj.Update();
+
+            new Promise((resolve, reject) => {
+              resolve('Promise resolved!');
+              
+              //try {
+                throw 'Uncaught exception!';
+              // } catch (error) {
+              //   console.error('Caught by try-catch:', error);
+              // }
+            })
+            .then(result => {
+              console.log(result); // 这会执行
+            })
+            // .catch(error => {
+            //   console.log('Caught by catch:', error); // 这不会执行
+            // });
         }
       </script>
    </body>
