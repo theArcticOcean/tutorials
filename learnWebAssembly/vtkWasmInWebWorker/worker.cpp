@@ -46,6 +46,7 @@ void Worker::Start()
     Log( IInfo, "Start!" );
 }
 
-void Worker::OnLeftButtonDown()
+void Worker::SimuComplexTask()
 {
+    emscripten_sleep( 0 );
 }

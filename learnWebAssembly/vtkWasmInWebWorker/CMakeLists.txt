@@ -57,6 +57,8 @@ if(EMSCRIPTEN)
   "SHELL:-s ASSERTIONS=2"
   "SHELL:-s USE_PTHREADS=1"
   "SHELL:-s PTHREAD_POOL_SIZE=4"
+  "SHELL:-s ASYNCIFY=1"
+  "SHELL:-s ASYNCIFY_IMPORTS=["SimuComplexTask"] "
   )
 
 endif()

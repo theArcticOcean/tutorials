@@ -27,7 +27,7 @@ public:
 
     void Init();
     void Start();
-    void OnLeftButtonDown();
+    void SimuComplexTask();
 protected:
 #ifdef __EMSCRIPTEN__
     vtkSPtr<vtkSDL2RenderWindowInteractor> m_RenderWindowInteractor;

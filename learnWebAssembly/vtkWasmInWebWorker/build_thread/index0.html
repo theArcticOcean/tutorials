@@ -107,6 +107,10 @@
          
         // Initialize after page load
         document.addEventListener('DOMContentLoaded', initApp);
+
+        $('button').addEventListener('click', function(){
+          workerObj.SimuComplexTask();
+        })
         
       </script>
    </body>
