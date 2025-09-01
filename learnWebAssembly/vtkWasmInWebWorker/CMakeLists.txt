@@ -33,12 +33,14 @@ if(EMSCRIPTEN)
   list(APPEND emscripten_options
     "-O3"
     "-g"
+    "-pthread"
     #"-sNO_DISABLE_EXCEPTION_CATCHING" # allow catch expection from c++ wasm
   )
 
   set(emscripten_link_options)
   list(APPEND emscripten_link_options
   "--bind"
+  "-pthread"
   #"-sNO_DISABLE_EXCEPTION_CATCHING" # allow catch expection from c++ wasm
   "SHELL:-s EXPORTED_RUNTIME_METHODS=['allocate,stringToUTF8,UTF8ToString,intArrayFromString']"
   "SHELL:-s -fdebug-compilation-dir=."
@@ -53,6 +55,8 @@ if(EMSCRIPTEN)
   "SHELL:-s INITIAL_MEMORY=200MB"
   "SHELL:-s MAXIMUM_MEMORY=4000MB"
   "SHELL:-s ASSERTIONS=2"
+  "SHELL:-s USE_PTHREADS=1"
+  "SHELL:-s PTHREAD_POOL_SIZE=4"
   )
 
 endif()
