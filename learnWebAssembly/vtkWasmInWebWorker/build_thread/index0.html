@@ -111,10 +111,11 @@
         document.addEventListener('DOMContentLoaded', initApp);
 
         $('button').addEventListener('click', function(){
-          workerObj.SimuComplexTask();
+          // workerObj.SimuComplexTask();
 
           // 异步版本（不会阻塞，通过Log输出结果）， 异步版本会在计算过程中定期让出控制权，避免阻塞浏览器的主线程，提供更好的用户体验。
-          // workerObj.SimuComplexTaskAsync();
+          const result = workerObj.SimuComplexTaskAsync();
+          console.log("result: ", result);
         })
 
         $('button2').addEventListener('click', function(){

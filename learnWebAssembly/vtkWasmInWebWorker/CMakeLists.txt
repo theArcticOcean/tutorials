@@ -58,7 +58,7 @@ if(EMSCRIPTEN)
   "SHELL:-s USE_PTHREADS=1"
   "SHELL:-s PTHREAD_POOL_SIZE=4"
   "SHELL:-s ASYNCIFY=1"
-  "SHELL:-s ASYNCIFY_IMPORTS=['SimuComplexTaskAsync']"
+  "SHELL:-s ASYNCIFY_IMPORTS=['Worker::SimuComplexTaskAsync']"
   )
 
 endif()
