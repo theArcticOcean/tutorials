@@ -53,7 +53,7 @@ void Worker::SimuComplexTask()
     // Record start time
     auto start_time = std::chrono::high_resolution_clock::now();
 
-    const int len = 10000;
+    const int len = 3000;
     double result = 0.0;  // Use local variable with proper type
     for (int i = 0; i < len; i++) {
         result += std::sqrt(i) * std::sin(i);
@@ -75,7 +75,7 @@ void Worker::SimuComplexTaskAsync()
     // Record start time
     auto start_time = std::chrono::high_resolution_clock::now();
 
-    const int len = 10000;
+    const int len = 3000;
     double result = 0.0;
     
     for (int i = 0; i < len; i++) {
@@ -86,7 +86,7 @@ void Worker::SimuComplexTaskAsync()
         
         // Yield to the event loop every 10 iterations to prevent blocking
         if (i % 10 == 0) {
-            emscripten_sleep(5);
+            emscripten_sleep(0);
         }
     }
     
