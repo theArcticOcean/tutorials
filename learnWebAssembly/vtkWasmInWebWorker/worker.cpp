@@ -1,5 +1,7 @@
 #include "worker.h"
 #include "Log.hpp"
+#include <cmath>
+#include <chrono>
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
@@ -48,5 +50,52 @@ void Worker::Start()
 
 void Worker::SimuComplexTask()
 {
-    emscripten_sleep( 0 );
+    // Record start time
+    auto start_time = std::chrono::high_resolution_clock::now();
+
+    const int len = 10000;
+    double result = 0.0;  // Use local variable with proper type
+    for (int i = 0; i < len; i++) {
+        result += std::sqrt(i) * std::sin(i);
+        for (int j = 0; j < len*50; j++) {
+            result += std::sqrt(j) * std::sin(j);
+        }
+    }
+    Log(IInfo, "complex task completed with result: " + std::to_string(result));
+
+    // Record end time and calculate duration
+    auto end_time = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+    Log(IInfo, "complex task duration: " + std::to_string(duration.count()) + " ms");
+}
+
+void Worker::SimuComplexTaskAsync()
+{
+#ifdef __EMSCRIPTEN__
+    // Record start time
+    auto start_time = std::chrono::high_resolution_clock::now();
+
+    const int len = 10000;
+    double result = 0.0;
+    
+    for (int i = 0; i < len; i++) {
+        result += std::sqrt(i) * std::sin(i);
+        for (int j = 0; j < len*50; j++) {
+            result += std::sqrt(j) * std::sin(j);
+        }
+        
+        // Yield to the event loop every 10 iterations to prevent blocking
+        if (i % 10 == 0) {
+            emscripten_sleep(5);
+        }
+    }
+    
+    Log(IInfo, "Async complex task completed with result: " + std::to_string(result));
+
+    // Record end time and calculate duration
+    auto end_time = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+    Log(IInfo, "Async complex task duration: " + std::to_string(duration.count()) + " ms");
+
+#endif
 }

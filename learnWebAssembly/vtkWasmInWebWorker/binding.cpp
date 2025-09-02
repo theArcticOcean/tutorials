@@ -9,5 +9,6 @@ EMSCRIPTEN_BINDINGS(worker) {
       .function("Init", &Worker::Init)
       .function("Start", &Worker::Start)
       .function("SimuComplexTask", &Worker::SimuComplexTask)
+      .function("SimuComplexTaskAsync", &Worker::SimuComplexTaskAsync)
       ;
 }
