@@ -47,12 +47,13 @@
         }
         
         // Initialize WASM module
+        var Module = null;
         function initializeWasm() {
           try {
             console.log('Starting WASM module initialization...');
             
             // Configure WASM module
-            const Module = {
+            Module = {
               canvas: canvas,
               onRuntimeInitialized: function() {
                 try {
@@ -114,7 +115,8 @@
           // workerObj.SimuComplexTask();
 
           // 异步版本（不会阻塞，通过Log输出结果）， 异步版本会在计算过程中定期让出控制权，避免阻塞浏览器的主线程，提供更好的用户体验。
-          const result = workerObj.SimuComplexTaskAsync();
+          //const result = workerObj.SimuComplexTaskAsync();
+          const result = Module._worker_simu_complex_task_async();
           console.log("result: ", result);
         })
 

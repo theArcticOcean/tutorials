@@ -42,7 +42,7 @@ if(EMSCRIPTEN)
   "--bind"
   "-pthread"
   #"-sNO_DISABLE_EXCEPTION_CATCHING" # allow catch expection from c++ wasm
-  "SHELL:-s EXPORTED_RUNTIME_METHODS=['allocate,stringToUTF8,UTF8ToString,intArrayFromString']"
+  "SHELL:-s EXPORTED_RUNTIME_METHODS=['allocate,stringToUTF8,UTF8ToString,intArrayFromString','Asyncify']"
   "SHELL:-s -fdebug-compilation-dir=."
   "SHELL:-s EXPORT_NAME=createModule"
   "SHELL:-s ALLOW_MEMORY_GROWTH=1"
@@ -57,8 +57,10 @@ if(EMSCRIPTEN)
   "SHELL:-s ASSERTIONS=2"
   "SHELL:-s USE_PTHREADS=1"
   "SHELL:-s PTHREAD_POOL_SIZE=4"
+  "SHELL:-s EXPORTED_FUNCTIONS=['_worker_simu_complex_task_async','_worker_cleanup']"
   "SHELL:-s ASYNCIFY=1"
-  "SHELL:-s ASYNCIFY_IMPORTS=['Worker::SimuComplexTaskAsync']"
+  #"SHELL:-s ASYNCIFY_ONLY=['_worker_simu_complex_task_async']"
+  "SHELL:-s ASYNCIFY_IMPORTS=['worker_simu_complex_task_async']"
   )
 
 endif()

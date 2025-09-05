@@ -3,6 +3,12 @@
 
 using namespace emscripten;
 
+// Declare extern C functions
+extern "C" {
+    void worker_simu_complex_task_async();
+    void worker_cleanup();
+}
+
 EMSCRIPTEN_BINDINGS(worker) {
    class_<Worker>("Worker")
       .constructor()
@@ -11,4 +17,8 @@ EMSCRIPTEN_BINDINGS(worker) {
       .function("SimuComplexTask", &Worker::SimuComplexTask)
       .function("SimuComplexTaskAsync", &Worker::SimuComplexTaskAsync)
       ;
+   
+   // // Export extern C functions
+   // function("worker_simu_complex_task_async", &worker_simu_complex_task_async);
+   // function("worker_cleanup", &worker_cleanup);
 }

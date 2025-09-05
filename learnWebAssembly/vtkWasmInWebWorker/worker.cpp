@@ -7,6 +7,27 @@
 #include <emscripten.h>
 #endif
 
+// Extern C wrapper functions to avoid C++ name mangling
+extern "C" {
+    // Global worker instance
+    static Worker* g_worker = nullptr;
+    
+    // Export SimuComplexTaskAsync function
+    void worker_simu_complex_task_async() {
+        if (g_worker) {
+            g_worker->SimuComplexTaskAsync();
+        }
+    }
+    
+    // Cleanup worker instance
+    void worker_cleanup() {
+        if (g_worker) {
+            delete g_worker;
+            g_worker = nullptr;
+        }
+    }
+}
+
 Worker::Worker()
 {
 #ifdef __EMSCRIPTEN__
@@ -16,6 +37,8 @@ Worker::Worker()
     m_RenderWindowInteractor = vtkSPtr<vtkRenderWindowInteractor>::New();
     m_RenderWindow = vtkSPtr<vtkRenderWindow>::New();
 #endif
+
+    g_worker = this;
 }
 
 void Worker::Init()
