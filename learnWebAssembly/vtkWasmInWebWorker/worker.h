@@ -29,6 +29,7 @@ public:
     void Start();
     void SimuComplexTask();
     void SimuComplexTaskAsync();
+    int TestBind(int a, int b);
 protected:
 #ifdef __EMSCRIPTEN__
     vtkSPtr<vtkSDL2RenderWindowInteractor> m_RenderWindowInteractor;

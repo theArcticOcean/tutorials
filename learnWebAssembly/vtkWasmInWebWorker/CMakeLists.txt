@@ -34,13 +34,22 @@ if(EMSCRIPTEN)
     "-O3"
     "-g"
     "-pthread"
+    #"SHELL:-s ASYNCIFY"
     #"-sNO_DISABLE_EXCEPTION_CATCHING" # allow catch expection from c++ wasm
   )
 
   set(emscripten_link_options)
   list(APPEND emscripten_link_options
   "--bind"
-  "-pthread"
+  #"-pthread"
+  "SHELL:-s USE_SDL=2"
+  "SHELL:-s ENVIRONMENT=web,worker"
+  "SHELL:-s EXTRA_EXPORTED_RUNTIME_METHODS=['GL']"
+  "SHELL:-s STACK_SIZE=5MB"
+  "SHELL:-s USE_WEBGL2=1" # for safari must use webgl=1.1, so set false here
+  "SHELL:-s FULL_ES2=1"
+  "SHELL:-s FULL_ES3=1"
+  "SHELL:-s TEXTDECODER=0"
   #"-sNO_DISABLE_EXCEPTION_CATCHING" # allow catch expection from c++ wasm
   "SHELL:-s EXPORTED_RUNTIME_METHODS=['allocate,stringToUTF8,UTF8ToString,intArrayFromString','Asyncify']"
   "SHELL:-s -fdebug-compilation-dir=."

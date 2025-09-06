@@ -16,6 +16,7 @@ EMSCRIPTEN_BINDINGS(worker) {
       .function("Start", &Worker::Start)
       .function("SimuComplexTask", &Worker::SimuComplexTask)
       .function("SimuComplexTaskAsync", &Worker::SimuComplexTaskAsync)
+      .function("TestBind", &Worker::TestBind)
       ;
    
    // // Export extern C functions

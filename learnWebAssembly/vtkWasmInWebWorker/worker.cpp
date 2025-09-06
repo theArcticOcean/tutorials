@@ -62,6 +62,8 @@ void Worker::Init()
     m_RenderWindow->Render();
 
     Log( IInfo, "Init!" );
+
+    emscripten_run_script( "console.log('hello world')" );
 }
 
 void Worker::Start()
@@ -84,12 +86,19 @@ void Worker::SimuComplexTask()
             result += std::sqrt(j) * std::sin(j);
         }
     }
+    emscripten_run_script( "console.log('SimuComplexTask hello world')" );
     Log(IInfo, "complex task completed with result: " + std::to_string(result));
 
     // Record end time and calculate duration
     auto end_time = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
     Log(IInfo, "complex task duration: " + std::to_string(duration.count()) + " ms");
+}
+
+int Worker::TestBind(int a, int b)
+{
+    emscripten_run_script( "addWasmCallbackInterface();" );
+    return a + b;
 }
 
 void Worker::SimuComplexTaskAsync()
@@ -112,7 +121,7 @@ void Worker::SimuComplexTaskAsync()
             emscripten_sleep(0);
         }
     }
-    
+    emscripten_run_script( "console.log('SimuComplexTaskAsync hello world')" );
     Log(IInfo, "Async complex task completed with result: " + std::to_string(result));
 
     // Record end time and calculate duration

@@ -111,18 +111,76 @@
         // Initialize after page load
         document.addEventListener('DOMContentLoaded', initApp);
 
-        $('button').addEventListener('click', function(){
-          // workerObj.SimuComplexTask();
+        //$('button').addEventListener('click', function(){
+          //workerObj.SimuComplexTaskAsync();
+
+        /*
+          RuntimeError: Aborted(Assertion failed: Cannot have multiple async operations in flight at once)
+          */
+         $('button').addEventListener('click', async function(){
+        //   try {
+        //     workerObj.SimuComplexTaskAsync();
+        //     console.log('SimuComplexTask completed successfully');
+        //   } catch (error) {
+        //     console.error('SimuComplexTask failed:', error);
+        //   }
+
+          const res = workerObj.TestBind(1, 2);
+          console.log("res: ", res);
 
           // 异步版本（不会阻塞，通过Log输出结果）， 异步版本会在计算过程中定期让出控制权，避免阻塞浏览器的主线程，提供更好的用户体验。
           //const result = workerObj.SimuComplexTaskAsync();
-          const result = Module._worker_simu_complex_task_async();
-          console.log("result: ", result);
+          //const result = Module._worker_simu_complex_task_async();
+          //console.log("result: ", result);
+          // const result = workerObj.SimuComplexTaskAsync();
+          // console.log("result: ", result);
+
+          // workerObj.SimuComplexTaskAsync().then(() => {
+          //   resolve("SimuComplexTaskAsync success")
+          // }).catch((error) => {
+          //   console.error("SimuComplexTaskAsync error: ", error);
+          //   reject(error)
+          // })
         })
 
         $('button2').addEventListener('click', function(){
           alert('hello world');
         })
+        
+        // Add callback interface to window for WASM
+        function addWasmCallbackInterface() {
+          console.log('addWasmCallbackInterface works!');
+          // Create callback interface object
+          window.wasmCallbacks = {
+            // Callback function for WASM to call
+            onWasmCallback: function(data) {
+              console.log('Received callback from WASM:', data);
+              // Handle the callback data here
+              return 'Callback received successfully';
+            },
+            
+            // Additional callback functions can be added here
+            onProgress: function(progress) {
+              console.log('Progress update from WASM:', progress + '%');
+              // Update UI progress indicator
+            },
+            
+            onError: function(errorMessage) {
+              console.error('Error from WASM:', errorMessage);
+              // Handle error from WASM
+            },
+            
+            onComplete: function(result) {
+              console.log('Task completed from WASM:', result);
+              // Handle completion from WASM
+            }
+          };
+          
+          console.log('WASM callback interface added to window');
+        }
+        
+        // Initialize callback interface
+        addWasmCallbackInterface();
         
       </script>
    </body>
