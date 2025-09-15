@@ -1,0 +1,169 @@
+<html>
+   <head>
+      <!-- VTK WebAssembly in Web Worker -->
+      <title>VTK WebAssembly in Web Worker</title>
+   </head>
+   <body>
+      <canvas id="canvas" style="position: absolute; left: 0; top: 0; width:80%; height:100%"></canvas>
+      
+      <button id="button" style="position: absolute; left: 0; bottom: 0;"> update </button>
+      <div id="status" style="position: absolute; right: 10px; top: 10px; background: rgba(0,0,0,0.7); color: white; padding: 10px; border-radius: 5px;">Initializing...</div>
+
+      <script>
+        // 监听全局 contextmenu 事件
+        document.addEventListener('contextmenu', function(e) {
+          e.preventDefault(); // 阻止默认右键菜单
+        });
+
+        function $(id){ return document.getElementById(id); }
+
+        // Web Worker 相关变量
+        let vtkWorker = null;
+        let isWorkerReady = false;
+        let canvas = null;
+
+        // 初始化应用
+        function initApp() {
+          console.log('初始化VTK WebAssembly应用...');
+          
+          // 获取canvas元素
+          canvas = document.getElementById('canvas');
+          canvas.addEventListener(
+            "webglcontextlost",
+            function (e) {
+              console.error('WebGL context lost. You will need to reload the page.');
+              e.preventDefault();
+            },
+            false
+          );
+          
+          // 添加鼠标事件监听
+          canvas.addEventListener('mousedown', handleMouseDown);
+          
+          // 创建并启动Web Worker
+          createWorker();
+        }
+        
+        // 创建Web Worker
+        function createWorker() {
+          try {
+            vtkWorker = new Worker('./vtk-worker.js');
+            
+            // 监听Worker消息
+            vtkWorker.onmessage = function(e) {
+              handleWorkerMessage(e.data);
+            };
+            
+            // 监听Worker错误
+            vtkWorker.onerror = function(error) {
+              console.error('Worker错误:', error);
+            };
+            
+            // 检查是否支持OffscreenCanvas
+            if (typeof OffscreenCanvas !== 'undefined' && canvas.transferControlToOffscreen) {
+              // 使用OffscreenCanvas
+              const offscreenCanvas = canvas.transferControlToOffscreen();
+              
+              // 初始化WASM模块，传递OffscreenCanvas
+              vtkWorker.postMessage({
+                type: 'INIT_WASM',
+                data: {
+                  canvas: offscreenCanvas
+                }
+              }, [offscreenCanvas]);
+              
+              console.log('使用OffscreenCanvas模式');
+            } else {
+              // 回退到主线程渲染模式
+              console.warn('浏览器不支持OffscreenCanvas，使用主线程渲染模式');
+              
+              // 初始化WASM模块，不传递canvas
+              vtkWorker.postMessage({
+                type: 'INIT_WASM',
+                data: {}
+              });
+            }
+            
+            console.log('Web Worker已创建并开始初始化WASM模块');
+          } catch (error) {
+            console.error('创建Web Worker失败:', error);
+          }
+        }
+        
+        // 处理Worker消息
+        function handleWorkerMessage(message) {
+          const { type, success, error } = message;
+          
+          switch(type) {
+            case 'WASM_INITIALIZED':
+              if (success) {
+                console.log('WASM模块初始化成功');
+                isWorkerReady = true;
+                // 开始渲染
+                vtkWorker.postMessage({ type: 'START_RENDERING' });
+              } else {
+                console.error('WASM模块初始化失败:', error);
+              }
+              break;
+              
+            case 'RENDERING_STARTED':
+              if (success) {
+                console.log('渲染已开始');
+              } else {
+                console.error('开始渲染失败:', error);
+              }
+              break;
+              
+            case 'SCENE_UPDATED':
+              console.log('场景已更新');
+              break;
+              
+            case 'MOUSE_EVENT_HANDLED':
+              // 鼠标事件已处理
+              break;
+              
+            case 'WORKER_ERROR':
+            case 'WASM_ERROR':
+              console.error('Worker错误:', error);
+              break;
+              
+            default:
+              console.warn('未知的Worker消息类型:', type);
+          }
+        }
+        
+        // 处理鼠标按下事件
+        function handleMouseDown(event) {
+          if (!isWorkerReady || !vtkWorker) {
+            return;
+          }
+          
+          vtkWorker.postMessage({
+            type: 'MOUSE_EVENT',
+            data: {
+              eventType: 'mousedown',
+              button: event.button,
+              x: event.clientX,
+              y: event.clientY
+            }
+          });
+        }
+        
+        // 按钮点击事件处理
+        $('button').onclick = function() {
+          console.log('按钮点击!');
+          if (isWorkerReady && vtkWorker) {
+            vtkWorker.postMessage({
+              type: 'UPDATE_SCENE'
+            });
+          } else {
+            console.warn('Worker尚未准备就绪');
+          }
+        }
+        
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', initApp);
+        
+      </script>
+   </body>
+</html>

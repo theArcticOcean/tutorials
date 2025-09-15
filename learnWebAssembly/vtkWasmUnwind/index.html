@@ -33,10 +33,14 @@
          onRuntimeInitialized: function () {
             workerObj = new Module.Worker();
             workerObj.Init();
-            workerObj.Start();
             console.log( "StartWork!" );
+            try {
+              workerObj.Start();
+            } catch (error) {
+              console.error( "StartWork error: ", error );
+            }
          },
-         };
+        };
 
         var app = createModule(Module);
         console.log('App created');

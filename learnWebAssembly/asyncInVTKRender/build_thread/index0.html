@@ -1,0 +1,181 @@
+<html>
+   <head>
+      <!-- VTK WebAssembly Direct Loading -->
+      <title>VTK WebAssembly Direct Loading</title>
+   </head>
+   <body>
+      <canvas id="canvas" style="position: absolute; left: 0; top: 0; width:80%; height:100%"></canvas>
+      
+      <button id="button" style="position: absolute; left: 0; bottom: 0;"> Compute </button>
+      <button id="button2" style="position: absolute; left: 200px; bottom: 0;"> Show Log </button>
+
+      <div id="status" style="position: absolute; right: 10px; top: 10px; background: rgba(0,0,0,0.7); color: white; padding: 10px; border-radius: 5px;">Initializing...</div>
+
+      <script src="./asyncInVTKRender.js"></script>
+      
+      <script>
+        // Listen for global contextmenu events
+        document.addEventListener('contextmenu', function(e) {
+          e.preventDefault(); // Prevent default right-click menu
+        });
+
+        function $(id){ return document.getElementById(id); }
+
+        // WASM related variables
+        let wasmModule = null;
+        let workerObj = null;
+        let isInitialized = false;
+        let canvas = null;
+
+        // Initialize application
+        function initApp() {
+          console.log('Initializing VTK WebAssembly application...');
+          
+          // Get canvas element
+          canvas = document.getElementById('canvas');
+          canvas.addEventListener(
+            "webglcontextlost",
+            function (e) {
+              console.error('WebGL context lost. You will need to reload the page.');
+              e.preventDefault();
+            },
+            false
+          );
+          
+          // Initialize WASM module directly
+          initializeWasm();
+        }
+        
+        // Initialize WASM module
+        var Module = null;
+        function initializeWasm() {
+          try {
+            console.log('Starting WASM module initialization...');
+            
+            // Configure WASM module
+            Module = {
+              canvas: canvas,
+              onRuntimeInitialized: function() {
+                try {
+                  console.log('WASM runtime initialization completed');
+                  
+                  // Create Worker object
+                  workerObj = new Module.Worker();
+                  workerObj.Init();
+                  isInitialized = true;
+                  
+                  console.log('VTK Worker object created and initialized');
+                  
+                  console.log( "Asyncify obj: ", Module.Asyncify );
+                  
+                  startRendering();
+
+                  // Wait for Asyncify state to become Normal before starting rendering
+                  waitForAsyncifyNormal().then(() => {
+                    console.log('Asyncify state is Normal, starting TestBind...');
+
+                    // if we call TestBind inmediatly, it will throw error
+                    // WASM module aborted: Assertion failed: Cannot have multiple async operations in flight at once
+                    const res = workerObj.TestBind(1, 2);  
+                    console.log("TestBind res: ", res);
+                  }).then((val) => {
+                    console.log('TestBind then: val: ', val );
+                  }).catch((error) => {
+                    console.error('Failed to TestBind:', error);
+                  }).finally(() => {
+                    console.log('TestBind finished');
+                  });
+
+                  console.log( "waitForAsyncifyNormal() called!" )
+
+                  // Update status display
+                  $('status').textContent = 'Ready';
+                  
+                } catch (error) {
+                  console.error('Failed to initialize VTK Worker object:', error);
+                  $('status').textContent = 'Error: ' + error.message;
+                }
+              },
+              onAbort: function(what) {
+                console.error('WASM module aborted:', what);
+                $('status').textContent = 'WASM module aborted: ' + what;
+              }
+            };
+            
+            // Create WASM module instance
+            wasmModule = createModule(Module);
+            
+          } catch (error) {
+            console.error('Failed to initialize WASM:', error);
+            $('status').textContent = 'Error: ' + error.message;
+          }
+        }
+        
+        // Wait for Asyncify state to become Normal
+        function waitForAsyncifyNormal() {
+          return new Promise((resolve) => {
+            function checkState() {
+              console.log('Current Asyncify state:', Module.Asyncify.state, 'Normal state:', Module.Asyncify.State.Normal);
+              
+              if (Module.Asyncify.state === Module.Asyncify.State.Normal) {
+                console.log('Asyncify state is now Normal');
+                resolve();
+              } else {
+                console.log('Asyncify state not Normal yet, waiting...');
+                setTimeout(checkState, 10); // Check every 10ms
+              }
+            }
+            // if we call it inmediatly, it will throw error
+            // Failed to TestBind: RuntimeError: Aborted(Assertion failed: Cannot have multiple async operations in flight at once)
+
+            //checkState();
+            setTimeout(checkState, 10);
+          });
+        }
+        
+        // Start rendering
+        async function startRendering() {
+          if (!isInitialized || !workerObj) {
+            console.error('WASM module not initialized, cannot start rendering');
+            return;
+          }
+          
+          try {
+            console.log('Starting rendering...');
+            await workerObj.Start(); // await is useless here
+            console.log('Rendering started');
+          } catch (error) {
+            console.error('Failed to start rendering:', error);
+          }
+        }
+         
+        // Initialize after page load
+        document.addEventListener('DOMContentLoaded', initApp);
+
+        $('button').addEventListener('click', async function(){
+          const res = workerObj.TestBind(1, 2);
+          console.log("res: ", res);
+        })
+
+        $('button2').addEventListener('click', function(){
+          alert('hello world');
+        })
+
+        // Add callback interface to window for WASM
+        function addWasmCallbackInterface() {
+          console.log('addWasmCallbackInterface works!');
+          // Create callback interface object
+          window.wasmCallbacks = {
+            // Callback function for WASM to call
+            onWasmCallback: function(data) {
+              console.log('Received callback from WASM:', data);
+              // Handle the callback data here
+              return 'Callback received successfully';
+            }
+          };
+          console.log('WASM callback interface added to window');
+        }
+        
+      </script>
+   </body>
+</html>
