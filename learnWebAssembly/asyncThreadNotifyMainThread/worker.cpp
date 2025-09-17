@@ -124,6 +124,10 @@ int Worker::TestBind(int a, int b)
     return c;
 }
 
+static void taskFinishCallback() {
+    emscripten_run_script("OnTaskFinished();");
+}
+
 void Worker::SimuComplexTaskAsync()
 {
     Log(IInfo, "Starting complex task in web worker thread using std::thread...");
@@ -143,7 +147,10 @@ void Worker::SimuComplexTaskAsync()
         Log(IInfo, "Complex task duration: " + std::to_string(duration.count()) + " ms");
         Log(IInfo, "Complex task in web worker thread using std::thread finished!");
 
-        emscripten_run_script( "OnTaskFinished();" );
+        //emscripten_run_script( "OnTaskFinished();" );
+#ifdef __EMSCRIPTEN__
+        emscripten_sync_run_in_main_runtime_thread(EM_FUNC_SIG_V, taskFinishCallback); // API from emscripten/threading.h
+#endif
     };
     
     // Create and detach the thread to run asynchronously
