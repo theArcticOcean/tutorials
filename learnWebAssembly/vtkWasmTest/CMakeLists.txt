@@ -14,16 +14,23 @@ include_directories(
 )
 
 if(EMSCRIPTEN)
-  set(emscripten_options)
-  list(APPEND emscripten_options
+  # 编译选项
+  set(emscripten_compile_options)
+  list(APPEND emscripten_compile_options
     "--bind"
     "-O3"
     "-g"
     "-DLOG_OFF"
+    "-fdebug-compilation-dir=."
+  )
+  
+  # 链接选项
+  set(emscripten_link_options)
+  list(APPEND emscripten_link_options
+    "--bind"
     "SHELL:-s USE_SDL=2"
     "SHELL:-s EXPORTED_RUNTIME_METHODS=['allocate,stringToUTF8,UTF8ToString,FS,intArrayFromString']"
     "SHELL:-s EXTRA_EXPORTED_RUNTIME_METHODS=['ALLOC_NORMAL']"
-    "SHELL:-s -fdebug-compilation-dir=."
     "SHELL:-s EXPORT_NAME=tester"
     "SHELL:-s ALLOW_MEMORY_GROWTH=1"
     "SHELL:-s DEMANGLE_SUPPORT=1"
@@ -38,7 +45,28 @@ if(EMSCRIPTEN)
     "SHELL:-s TOTAL_MEMORY=512MB"
     "SHELL:-s DISABLE_EXCEPTION_CATCHING=0"
   )
-    message("Configuring data directory for wasm..........")
+  
+  # 检查是否需要多线程支持
+  if(BUILD_THREAD_TYPE STREQUAL "Multi")
+    message(STATUS "Configuring build with pthread support")
+    # 多线程编译选项
+    list(APPEND emscripten_compile_options
+      "-pthread"
+    )
+    # 多线程链接选项
+    list(APPEND emscripten_link_options
+      "-pthread"
+      "SHELL:-s USE_PTHREADS=1"
+      "SHELL:-s PTHREAD_POOL_SIZE=4"
+      "SHELL:-s ALLOW_MEMORY_GROWTH=1"
+    )
+    # 添加多线程相关的宏定义
+    add_definitions(-DUSE_PTHREADS)
+  else()
+    message(STATUS "Configuring regular build without pthread support")
+  endif()
+  
+  message("Configuring data directory for wasm..........")
 endif()
 
 set( cpps 
@@ -61,12 +89,12 @@ endif ()
 
 target_compile_options(${PROJECT_NAME}
   PUBLIC
-    ${emscripten_options}
+    ${emscripten_compile_options}
 )
 
 target_link_options(${PROJECT_NAME}
   PUBLIC
-    ${emscripten_options}
+    ${emscripten_link_options}
 )
 
 target_link_libraries( ${PROJECT_NAME} ${VTK_LIBRARIES} ${LINK_FLAGS} )
