@@ -1,0 +1,128 @@
+<html>
+   <head>
+      <!-- VTK WebAssembly Direct Loading -->
+      <title>VTK WebAssembly Direct Loading</title>
+   </head>
+   <body>
+      <canvas id="canvas" style="position: absolute; left: 0; top: 0; width:80%; height:100%"></canvas>
+      
+      <button id="button" style="position: absolute; left: 0; bottom: 0;"> Compute </button>
+      <button id="button2" style="position: absolute; left: 200px; bottom: 0;"> Show Log </button>
+
+      <div id="status" style="position: absolute; right: 10px; top: 10px; background: rgba(0,0,0,0.7); color: white; padding: 10px; border-radius: 5px;">Initializing...</div>
+
+      <script src="./asyncThreadNotifyMainThread.js"></script>
+      
+      <script>
+        // Listen for global contextmenu events
+        document.addEventListener('contextmenu', function(e) {
+          e.preventDefault(); // Prevent default right-click menu
+        });
+
+        function $(id){ return document.getElementById(id); }
+
+        // WASM related variables
+        let wasmModule = null;
+        let workerObj = null;
+        let isInitialized = false;
+        let canvas = null;
+
+        // Initialize application
+        function initApp() {
+          console.log('Initializing VTK WebAssembly application...');
+          
+          // Get canvas element
+          canvas = document.getElementById('canvas');
+          canvas.addEventListener(
+            "webglcontextlost",
+            function (e) {
+              console.error('WebGL context lost. You will need to reload the page.');
+              e.preventDefault();
+            },
+            false
+          );
+          
+          // Initialize WASM module directly
+          initializeWasm();
+        }
+        
+        // Initialize WASM module
+        var Module = null;
+        function initializeWasm() {
+          try {
+            console.log('Starting WASM module initialization...');
+            
+            // Configure WASM module
+            Module = {
+              canvas: canvas,
+              onRuntimeInitialized: function() {
+                try {
+                  console.log('WASM runtime initialization completed');
+                  
+                  // Create Worker object
+                  workerObj = new Module.Worker();
+                  workerObj.Init();
+                  isInitialized = true;
+                  
+                  console.log('VTK Worker object created and initialized');
+                  
+                  startRendering();
+
+                  // Update status display
+                  $('status').textContent = 'Ready';
+                  
+                } catch (error) {
+                  console.error('Failed to initialize VTK Worker object:', error);
+                  $('status').textContent = 'Error: ' + error.message;
+                }
+              },
+              onAbort: function(what) {
+                console.error('WASM module aborted:', what);
+                $('status').textContent = 'WASM module aborted: ' + what;
+              }
+            };
+            
+            // Create WASM module instance
+            wasmModule = createModule(Module);
+            
+          } catch (error) {
+            console.error('Failed to initialize WASM:', error);
+            $('status').textContent = 'Error: ' + error.message;
+          }
+        }
+        
+        // Start rendering
+        function startRendering() {
+          if (!isInitialized || !workerObj) {
+            console.error('WASM module not initialized, cannot start rendering');
+            return;
+          }
+          
+          try {
+            console.log('Starting rendering...');
+            workerObj.Start();
+            console.log('Rendering started');
+          } catch (error) {
+            console.error('Failed to start rendering:', error);
+          }
+        }
+         
+        // Initialize after page load
+        document.addEventListener('DOMContentLoaded', initApp);
+
+        $('button').addEventListener('click', function(){
+          workerObj.SimuComplexTaskAsync();
+        })
+
+        $('button2').addEventListener('click', function(){
+          alert('hello world');
+        })
+        
+        function OnTaskFinished()
+        {
+          alert('task finished');
+        }
+        window.OnTaskFinished = OnTaskFinished;
+      </script>
+   </body>
+</html>
