@@ -40,7 +40,7 @@ if(EMSCRIPTEN)
   "SHELL:-s --no-heap-copy"
   "SHELL:-s INITIAL_MEMORY=200MB"
   "SHELL:-s MAXIMUM_MEMORY=4000MB"
-  "SHELL:-s ASSERTIONS=2"
+  "SHELL:-s ASSERTIONS=1"
   )
 
 endif()
