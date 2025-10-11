@@ -25,7 +25,6 @@ if(EMSCRIPTEN)
   set(emscripten_compile_options_common)
   list(APPEND emscripten_compile_options_common
     "--bind"
-    "-DLOG_OFF"
   )
   
   # Common link options for both Debug and Release
@@ -42,7 +41,6 @@ if(EMSCRIPTEN)
     "SHELL:-s ERROR_ON_UNDEFINED_SYMBOLS=0"
     "SHELL:-s MODULARIZE=1"
     "SHELL:-s WASM=1"
-    "SHELL:-s --no-heap-copy"
     "SHELL:-s INITIAL_MEMORY=200MB"
     "SHELL:-s MAXIMUM_MEMORY=512MB"
     "SHELL:-s DISABLE_EXCEPTION_CATCHING=0"
@@ -55,31 +53,13 @@ if(EMSCRIPTEN)
     set(emscripten_compile_options_debug)
     list(APPEND emscripten_compile_options_debug
       "-O0"                          # No optimization
-      "-g"                          # 改为g3，3.1.51版本更兼容
-      #"-fdebug-compilation-dir=."    # 设置调试编译目录
-      #"-gseparate-dwarf"             # 注释掉这行
-      "-gsource-map"                 # 生成source map
-      #"-fno-omit-frame-pointer"      # 保留帧指针用于调试
-      # "-fdebug-prefix-map=${CMAKE_SOURCE_DIR}=/src"  # 添加路径映射
+      "-g3"                          # 改为g3，3.1.51版本更兼容
     )
     
     set(emscripten_link_options_debug)
     list(APPEND emscripten_link_options_debug
-      "-O0"                                    
-      "-g4"
-      "-sSAFE_HEAP=0"                          # 新语法格式                                    
-      "-gsource-map"                           
-      # "--source-map-base=http://127.0.0.1:4002/" 
-      # "-fdebug-prefix-map=${CMAKE_SOURCE_DIR}=/src"  
+      "-g3"
     )
-      # "-sSAFE_HEAP=1"                          # 新语法格式
-      # "-sSTACK_OVERFLOW_CHECK=2"               # 新语法格式
-      # "-sASSERTIONS=2"                         # 新语法格式
-      # "-sDEMANGLE_SUPPORT=1"                   # 新语法格式
-      # "-sRUNTIME_DEBUG=1"                      # 启用运行时调试
-    
-
-    #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g4 -gsource-map")
     
     # Combine common and debug options
     set(emscripten_compile_options ${emscripten_compile_options_common} ${emscripten_compile_options_debug})
@@ -92,17 +72,11 @@ if(EMSCRIPTEN)
     set(emscripten_compile_options_release)
     list(APPEND emscripten_compile_options_release
       "-O3"
-      "-DNDEBUG"
-      "--closure=1"
     )
     
     set(emscripten_link_options_release)
     list(APPEND emscripten_link_options_release
-      "-O3"
-      "--closure=1"
-      "-sASSERTIONS=0"
-      #"-sSAFE_HEAP=0"
-      "-sSTACK_OVERFLOW_CHECK=0"
+      "SHELL:-s --no-heap-copy"
     )
     
     set(emscripten_compile_options ${emscripten_compile_options_common} ${emscripten_compile_options_release})
