@@ -46,8 +46,14 @@ static bool NeedMimallocFreeSpace(int taskId, size_t neededBytes)
 
 #endif
 
-// C function for complex task in thread
-void complex_task_thread_func(int len, int taskId)
+// 全局任务编号：多线程派发时保证 taskId 唯一
+static std::atomic<int> g_taskIdCounter(0);
+const std::size_t g_ElemCount = 100*1024*1024; // X MB elements
+// malloc in heap memory
+const int g_AllocCount = 15;
+
+// 单个任务：批量申请/释放堆内存（每个任务运行在一个独立线程中）
+static void AllocHeapTask(int taskId)
 {
 #ifdef __EMSCRIPTEN__
     emscripten_run_script("console.log('Complex task started in std::thread web worker');");
@@ -55,58 +61,76 @@ void complex_task_thread_func(int len, int taskId)
     Log(IInfo, "Complex task started in std::thread web worker");
 #endif
 
-    // malloc in heap memory
-    const int allocCount = 50;
-    const std::size_t elemCount = 500*1024*1024; // X MB elements
-    for (int i = 0; i < len; i++) {
-        bool** buffers = new bool*[allocCount]();
+    bool** buffers = new bool*[g_AllocCount]();
 
-        for (int j = 0; j < allocCount; j++) {
-            const std::size_t count = elemCount + static_cast<std::size_t>(j) * 256;
-            //bool needMimallocFreeSpace = NeedMimallocFreeSpace(taskId, count * sizeof(bool));
+    for (int j = 0; j < g_AllocCount; j++) {
+        //bool needMimallocFreeSpace = NeedMimallocFreeSpace(taskId, count * sizeof(bool));
 
-            unsigned long long heapSize = emscripten_get_heap_size();
-            unsigned long long heapMax = emscripten_get_heap_max();
-            unsigned long long needSize = count * sizeof(bool);
+        unsigned long long heapSize = emscripten_get_heap_size();
+        unsigned long long heapMax = emscripten_get_heap_max();
+        unsigned long long needSize = g_ElemCount * sizeof(bool);
 
-            bool needMimallocFreeSpace = (heapSize + needSize) > heapMax ? true : false;
+        bool needMimallocFreeSpace = (heapSize + needSize) > heapMax ? true : false;
 
-            Log( IInfo, "XT-mem taskId ", taskId, " Before allocation: heapSize: ", (int)(heapSize / (1024 * 1024)), " MB, heapMax: ", (int)(heapMax / (1024 * 1024)), " MB, needSize: ", (int)(needSize / (1024 * 1024)), " MB, needMimallocFreeSpace: ", needMimallocFreeSpace );
+        Log( IInfo, "XT-mem taskId ", taskId, " Before allocation: heapSize: ", (int)(heapSize / (1024 * 1024)), " MB, heapMax: ", (int)(heapMax / (1024 * 1024)), " MB, needSize: ", (int)(needSize / (1024 * 1024)), " MB, needMimallocFreeSpace: ", needMimallocFreeSpace );
 
-            if( needMimallocFreeSpace )
-            {
-                // emsdk 说明：new[] 申请的内存只能由 delete[] 释放；
-                // emscripten_free()/emscripten_builtin_free() 只适用于 malloc 出来的指针，混用是未定义行为
-                for (int k = 0; k < j; k++) {
-                    delete[] buffers[k];
-                    buffers[k] = nullptr;   // 外层统一释放时避免二次 delete
-                }
-                // 把 mimalloc 的空闲页归还给 wasm 堆，后续大块申请可直接复用而不必继续增长堆
-                mi_collect(true);
-                Log(IInfo, "XT-mem taskId ", taskId, " released ", j, " buffers, heap: ", (int)(emscripten_get_heap_size() / (1024 * 1024)), " MB, heapMax: ", (int)(emscripten_get_heap_max() / (1024 * 1024)), " MB");
-            }
+        // if( needMimallocFreeSpace )
+        // {
+        //     // emsdk 说明：new[] 申请的内存只能由 delete[] 释放；
+        //     // emscripten_free()/emscripten_builtin_free() 只适用于 malloc 出来的指针，混用是未定义行为
+        //     for (int k = 0; k < j; k++) {
+        //         delete[] buffers[k];
+        //         buffers[k] = nullptr;   // 统一释放时避免二次 delete
+        //     }
+        //     // 把 mimalloc 的空闲页归还给 wasm 堆，后续大块申请可直接复用而不必继续增长堆
+        //     mi_collect(true);
+        //     Log(IInfo, "XT-mem taskId ", taskId, " released ", j, " buffers, heap: ", (int)(emscripten_get_heap_size() / (1024 * 1024)), " MB, heapMax: ", (int)(emscripten_get_heap_max() / (1024 * 1024)), " MB.");
 
-            buffers[j] = new bool[count];
+        //     continue;
+        // }
 
-            buffers[j][0] = i%2 == 0;
-            buffers[j][count - 1] = i%2 != 0;
+        buffers[j] = new bool[g_ElemCount];
 
-            Log(IInfo, "XT-mem taskId ", taskId, " After allocation and deallocation: ", (int)(emscripten_get_heap_size() / (1024 * 1024)), " MB");
+        buffers[j][0] = taskId%2 == 0;
+        buffers[j][g_ElemCount - 1] = taskId%2 != 0;
 
-        }
+        Log(IInfo, "XT-mem taskId ", taskId, " After allocation and deallocation: ", (int)(emscripten_get_heap_size() / (1024 * 1024)), " MB");
 
-        // 外层循环末尾统一释放本轮申请的所有块
-        for (int j = 0; j < allocCount; j++) {
-            delete[] buffers[j];
-        }
-        delete[] buffers;
     }
-    
+
+    // 统一释放本任务申请的所有块
+    for (int j = 0; j < g_AllocCount; j++) {
+        delete[] buffers[j];
+    }
+    delete[] buffers;
+
 #ifdef __EMSCRIPTEN__
     emscripten_run_script("console.log('Complex task completed in std::thread web worker');");
 #else
     Log(IInfo, "Complex task completed in std::thread web worker");
 #endif
+}
+
+// C function for complex task in thread
+void complex_task_thread_func(int len, int taskId)
+{
+    Log(IInfo, "XT-mem parent taskId ", taskId, " dispatching ", len, " tasks, one thread per task");
+
+    // for (int i = 0; i < len; i++) {
+    //     const int newTaskId = g_taskIdCounter.fetch_add(1) + taskId * len; // 保证每个任务的 taskId 唯一
+    //     AllocHeapTask(  newTaskId );
+    // }
+
+    // 每一个任务交给一个独立的线程处理
+    std::vector<std::thread> threads;
+    int batchSize = 1;
+    for (int i = 0; i < len; i += batchSize) {
+        const int newTaskId = g_taskIdCounter.fetch_add(1) + taskId * len; // 保证每个任务的 taskId 唯一
+        threads.push_back(std::thread( AllocHeapTask, newTaskId ));
+    }
+    for (auto& thread : threads) {
+        thread.join();
+    }
 }
 
 Worker::Worker()
@@ -173,7 +197,7 @@ void Worker::SimuComplexTaskAsync()
 {
     Log(IInfo, "Starting complex task in web worker thread using std::thread...");
     
-    const int len = 1024*1024;
+    const int len = 10;
     
     // Create a lambda function to wrap the task with timing and logging
     auto task_wrapper = [len](int taskId) {
