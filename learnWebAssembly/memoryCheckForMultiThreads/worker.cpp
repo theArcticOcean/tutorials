@@ -47,13 +47,13 @@ static bool NeedMimallocFreeSpace(int taskId, size_t neededBytes)
 
 #endif
 
-// 全局任务编号：多线程派发时保证 taskId 唯一
+// Global task id counter: keeps taskId unique when tasks are dispatched from multiple threads
 static std::atomic<int> g_taskIdCounter(0);
 const std::size_t g_ElemCount = 100*1024*1024; // X MB elements
 // malloc in heap memory
 const int g_AllocCount = 15;
 
-// 单个任务：批量申请/释放堆内存（每个任务运行在一个独立线程中）
+// A single task: batch allocate/free heap memory (each task runs in its own thread)
 static void AllocHeapTask(int taskId)
 {
 #ifdef __EMSCRIPTEN__
@@ -77,13 +77,13 @@ static void AllocHeapTask(int taskId)
 
         // if( needMimallocFreeSpace )
         // {
-        //     // emsdk 说明：new[] 申请的内存只能由 delete[] 释放；
-        //     // emscripten_free()/emscripten_builtin_free() 只适用于 malloc 出来的指针，混用是未定义行为
+        //     // emsdk note: memory allocated with new[] must be released with delete[];
+        //     // emscripten_free()/emscripten_builtin_free() only accept pointers from malloc, mixing them is undefined behavior
         //     for (int k = 0; k < j; k++) {
         //         delete[] buffers[k];
-        //         buffers[k] = nullptr;   // 统一释放时避免二次 delete
+        //         buffers[k] = nullptr;   // avoid a double delete in the final cleanup
         //     }
-        //     // 把 mimalloc 的空闲页归还给 wasm 堆，后续大块申请可直接复用而不必继续增长堆
+        //     // Return mimalloc's free pages to the wasm heap, so later large allocations can be reused without growing the heap
         //     mi_collect(true);
         //     Log(IInfo, "XT-mem taskId ", taskId, " released ", j, " buffers, heap: ", (int)(emscripten_get_heap_size() / (1024 * 1024)), " MB, heapMax: ", (int)(emscripten_get_heap_max() / (1024 * 1024)), " MB.");
 
@@ -99,7 +99,7 @@ static void AllocHeapTask(int taskId)
 
     }
 
-    // 统一释放本任务申请的所有块
+    // Release all the blocks allocated by this task
     for (int j = 0; j < g_AllocCount; j++) {
         delete[] buffers[j];
     }
@@ -117,20 +117,20 @@ void complex_task_thread_func(int len, int taskId)
 {
     Log(IInfo, "XT-mem parent taskId ", taskId, " dispatching ", len, " tasks, one thread per task");
 
-    // 单个任务需要的堆内存：g_AllocCount 个块，每块 g_ElemCount 个 bool
+    // Heap memory needed by a single task: g_AllocCount blocks of g_ElemCount bools each
     const unsigned long long taskBytes = (unsigned long long)g_AllocCount * (unsigned long long)g_ElemCount * sizeof(bool);
 
     int dispatched = 0;
     while (dispatched < len)
     {
-        // 可用内存 = 还能继续增长的(wasm heap 上限 - 当前大小) + emmalloc 里已经空闲的
+        // Available memory = still growable (wasm heap max - current size) + already free inside emmalloc
         const unsigned long long heapSize = emscripten_get_heap_size();
         const unsigned long long heapMax = emscripten_get_heap_max();
         const unsigned long long growRoom = (heapMax > heapSize) ? (heapMax - heapSize) : 0ULL;
-        const unsigned long long freeMem = emmalloc_free_dynamic_memory();  // 慢：线性遍历所有空闲块，只在批次边界调用一次
+        const unsigned long long freeMem = emmalloc_free_dynamic_memory();  // slow: walks all free blocks linearly, called once per batch boundary
         const unsigned long long available = growRoom + freeMem;
 
-        // 留 20% 余量，按可用内存决定这一批并发跑多少个任务；内存不足时退化为 1 个
+        // Keep 20% headroom, decide how many tasks run concurrently in this batch, falls back to 1 when memory is tight
         unsigned long long maxTasks = (available * 8 / 10) / taskBytes;
         if (maxTasks < 1) maxTasks = 1;
         const unsigned long long remain = (unsigned long long)(len - dispatched);
@@ -139,11 +139,11 @@ void complex_task_thread_func(int len, int taskId)
 
         Log(IInfo, "XT-mem parent taskId ", taskId, " batch: ", batchSize, " tasks, available: ", (int)(available / (1024 * 1024)), " MB (grow: ", (int)(growRoom / (1024 * 1024)), " MB, free: ", (int)(freeMem / (1024 * 1024)), " MB), per task: ", (int)(taskBytes / (1024 * 1024)), " MB");
 
-        // 每一个任务交给一个独立的线程处理
+        // Each task is handled by an independent thread
         std::vector<std::thread> threads;
         threads.reserve(batchSize);
         for (int i = 0; i < batchSize; i++) {
-            const int newTaskId = g_taskIdCounter.fetch_add(1) + taskId * len; // 保证每个任务的 taskId 唯一
+            const int newTaskId = g_taskIdCounter.fetch_add(1) + taskId * len; // keep taskId unique for every task
             threads.push_back(std::thread( AllocHeapTask, newTaskId ));
         }
         for (auto& thread : threads) {
@@ -155,7 +155,7 @@ void complex_task_thread_func(int len, int taskId)
 
     // std::vector<std::thread> threads;
     // for (int i = 0; i < len; i++) {
-    //     const int newTaskId = g_taskIdCounter.fetch_add(1) + taskId * len; // 保证每个任务的 taskId 唯一
+    //     const int newTaskId = g_taskIdCounter.fetch_add(1) + taskId * len; // keep taskId unique for every task
     //     threads.push_back(std::thread( AllocHeapTask, newTaskId ));
     // }
     // for (auto& thread : threads) {
