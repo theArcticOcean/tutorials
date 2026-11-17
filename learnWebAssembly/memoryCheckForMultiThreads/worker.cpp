@@ -3,6 +3,7 @@
 #include <cmath>
 #include <cstddef>
 #include <chrono>
+#include <vector>
 #include <unistd.h>
 
 #ifdef __EMSCRIPTEN__
@@ -116,21 +117,50 @@ void complex_task_thread_func(int len, int taskId)
 {
     Log(IInfo, "XT-mem parent taskId ", taskId, " dispatching ", len, " tasks, one thread per task");
 
+    // 单个任务需要的堆内存：g_AllocCount 个块，每块 g_ElemCount 个 bool
+    const unsigned long long taskBytes = (unsigned long long)g_AllocCount * (unsigned long long)g_ElemCount * sizeof(bool);
+
+    int dispatched = 0;
+    while (dispatched < len)
+    {
+        // 可用内存 = 还能继续增长的(wasm heap 上限 - 当前大小) + emmalloc 里已经空闲的
+        const unsigned long long heapSize = emscripten_get_heap_size();
+        const unsigned long long heapMax = emscripten_get_heap_max();
+        const unsigned long long growRoom = (heapMax > heapSize) ? (heapMax - heapSize) : 0ULL;
+        const unsigned long long freeMem = emmalloc_free_dynamic_memory();  // 慢：线性遍历所有空闲块，只在批次边界调用一次
+        const unsigned long long available = growRoom + freeMem;
+
+        // 留 20% 余量，按可用内存决定这一批并发跑多少个任务；内存不足时退化为 1 个
+        unsigned long long maxTasks = (available * 8 / 10) / taskBytes;
+        if (maxTasks < 1) maxTasks = 1;
+        const unsigned long long remain = (unsigned long long)(len - dispatched);
+        if (maxTasks > remain) maxTasks = remain;
+        const int batchSize = (int)maxTasks;
+
+        Log(IInfo, "XT-mem parent taskId ", taskId, " batch: ", batchSize, " tasks, available: ", (int)(available / (1024 * 1024)), " MB (grow: ", (int)(growRoom / (1024 * 1024)), " MB, free: ", (int)(freeMem / (1024 * 1024)), " MB), per task: ", (int)(taskBytes / (1024 * 1024)), " MB");
+
+        // 每一个任务交给一个独立的线程处理
+        std::vector<std::thread> threads;
+        threads.reserve(batchSize);
+        for (int i = 0; i < batchSize; i++) {
+            const int newTaskId = g_taskIdCounter.fetch_add(1) + taskId * len; // 保证每个任务的 taskId 唯一
+            threads.push_back(std::thread( AllocHeapTask, newTaskId ));
+        }
+        for (auto& thread : threads) {
+            thread.join();
+        }
+
+        dispatched += batchSize;
+    }
+
+    // std::vector<std::thread> threads;
     // for (int i = 0; i < len; i++) {
     //     const int newTaskId = g_taskIdCounter.fetch_add(1) + taskId * len; // 保证每个任务的 taskId 唯一
-    //     AllocHeapTask(  newTaskId );
+    //     threads.push_back(std::thread( AllocHeapTask, newTaskId ));
     // }
-
-    // 每一个任务交给一个独立的线程处理
-    std::vector<std::thread> threads;
-    int batchSize = 1;
-    for (int i = 0; i < len; i += batchSize) {
-        const int newTaskId = g_taskIdCounter.fetch_add(1) + taskId * len; // 保证每个任务的 taskId 唯一
-        threads.push_back(std::thread( AllocHeapTask, newTaskId ));
-    }
-    for (auto& thread : threads) {
-        thread.join();
-    }
+    // for (auto& thread : threads) {
+    //     thread.join();
+    // }
 }
 
 Worker::Worker()
@@ -190,6 +220,7 @@ void Worker::Start()
 }
 
 static void taskFinishCallback() {
+    mi_collect(true);
     emscripten_run_script("OnTaskFinished();");
 }
 
@@ -217,11 +248,8 @@ void Worker::SimuComplexTaskAsync()
 #endif
     };
     
-    // Create and detach the thread to run asynchronously
-    for(  int i = 0; i < 2; i++ )
-    {
-        std::thread subThread(task_wrapper, i);
-        subThread.detach();
-    }
+    std::thread subThread(task_wrapper, 0);
+    subThread.detach();
+
     Log(IInfo, "Complex task thread started, main thread continues...");
 }
